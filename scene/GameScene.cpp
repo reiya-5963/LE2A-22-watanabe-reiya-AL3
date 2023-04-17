@@ -1,4 +1,5 @@
 #include "GameScene.h"
+#include "ImGuiManager.h"
 #include "TextureManager.h"
 #include <cassert>
 
@@ -40,6 +41,17 @@ void GameScene::Initialize() {
 }
 
 void GameScene::Update() {
+	ImGui::Begin("Debug1");
+	//ImGui::Text("Kamata Trou %d.%d.%d", 2050, 12, 31);
+	//float3入力ボックス
+	ImGui::InputFloat3("InputFloat3", inputFloat3);
+	//float3スライダー
+	ImGui::SliderFloat3("SliderFloat3", inputFloat3, 0.0f, 1.0f);
+
+	ImGui::ShowDemoWindow();
+
+	ImGui::End();
+
 	//スプライトの今の座標を取得
 	Vector2 position = sprite_->GetPosition();
 	//座標を{ 2, 1 }移動
