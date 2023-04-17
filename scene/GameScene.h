@@ -51,7 +51,13 @@ private: // メンバ変数
 	//スプライト
 	Sprite* sprite_ = nullptr;
 
-	
+	//3Dモデルの生成
+	Model* model_ = nullptr;
+
+	//ワールドトランスフォーム
+	WorldTransform worldTransform_;
+	//ビュープロジェクション
+	ViewProjection viewProjection_;
 
 	/// <summary>
 	/// ゲームシーン用
