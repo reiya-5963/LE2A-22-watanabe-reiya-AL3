@@ -106,15 +106,10 @@ void GameScene::Draw() {
 		PrimitiveDrawer::GetInstance()->DrawLine3d(
 		    {0 - 50, 0 + x * 1 - 50, 0}, {100 - 50, 0 + x * 1 - 50, 0}, {1.0f, 0.0f, 0.0f, 1.0f}
 		);
-
 	}
 	for (float y = 0; y < 100; y++) {
 		PrimitiveDrawer::GetInstance()->DrawLine3d(
 		    {0 + y * 1 - 50, 0 - 50, 0}, {0 + y * 1 - 50, 100 - 50, 0}, {0.0f, 1.0f, 0.0f, 1.0f});
-	}
-	for (float z = 0; z < 100; z++) {
-		PrimitiveDrawer::GetInstance()->DrawLine3d(
-		    {0, 0, 0 + z * 100}, {0, 0, 100 + z * 100}, {0.0f, 0.0f, 1.0f, 1.0f});
 	}
 
 #pragma region 前景スプライト描画
