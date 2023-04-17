@@ -1,7 +1,20 @@
 #include <Player.h>
+#include <cassert>
 
-void Player::Initialize() {}
+
+void Player::Initialize(Model* model, uint32_t textureHandle) {
+	assert(model);
+
+	
+	model_ = model;
+	textureHandle_ = textureHandle;
+
+	worldTransform_.Initialize();
+}
+
 
 void Player::Update() {}
 
-void Player::Draw() {}
+void Player::Draw(ViewProjection& viewProjection) { 
+	model_->Draw(worldTransform_, viewProjection, textureHandle_);
+}
