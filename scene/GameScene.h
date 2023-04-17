@@ -48,6 +48,12 @@ private: // メンバ変数
 	//テクスチャハンドル
 	uint32_t textureHandle_ = 0;
 
+	//サウンドデータハンドル
+	uint32_t soundDataHandle_ = 0;
+
+	//音声再生ハンドル
+	uint32_t voiceHandle_ = 0;
+
 	//スプライト
 	Sprite* sprite_ = nullptr;
 
@@ -58,6 +64,7 @@ private: // メンバ変数
 	WorldTransform worldTransform_;
 	//ビュープロジェクション
 	ViewProjection viewProjection_;
+
 
 	/// <summary>
 	/// ゲームシーン用
