@@ -115,14 +115,14 @@ void GameScene::Draw() {
 	Model::PostDraw();
 #pragma endregion
 
-	for (float x = 0; x < 100; x++) {
+	for (float x = 0; x < 72; x++) {
 		PrimitiveDrawer::GetInstance()->DrawLine3d(
-		    {0 - 50, 0 + x * 1 - 50, 0}, {100 - 50, 0 + x * 1 - 50, 0}, {1.0f, 0.0f, 0.0f, 1.0f}
+		    {0 - 37, 0 + x * 1 - 50, 0}, {74 - 37, 0 + x * 1 - 50, 0}, {1.0f, 0.0f, 0.0f, 1.0f}
 		);
 	}
-	for (float y = 0; y < 100; y++) {
+	for (float y = 0; y < 78; y++) {
 		PrimitiveDrawer::GetInstance()->DrawLine3d(
-		    {0 + y * 1 - 50, 0 - 50, 0}, {0 + y * 1 - 50, 100 - 50, 0}, {0.0f, 1.0f, 0.0f, 1.0f});
+		    {0 + y * 1 - 40, 0 - 50, 0}, {0 + y * 1 - 40, 72 - 50, 0}, {0.0f, 1.0f, 0.0f, 1.0f});
 	}
 
 #pragma region 前景スプライト描画
