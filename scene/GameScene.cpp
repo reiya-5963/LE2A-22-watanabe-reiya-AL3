@@ -9,6 +9,7 @@ GameScene::GameScene() {}
 GameScene::~GameScene() {
 	delete sprite_;
 	delete model_;
+	delete debugCamera_;
 }
 
 void GameScene::Initialize() {
@@ -41,9 +42,14 @@ void GameScene::Initialize() {
 
 	// ライン描画が参照するビュープロジェクションを指定する(アドレス渡し)
 	PrimitiveDrawer::GetInstance()->SetViewProjection(&viewProjection_);
+
+	//デバッグカメラの生成
+	debugCamera_ = new DebugCamera(1280, 720);
 }
 
 void GameScene::Update() {
+	debugCamera_->Update();
+
 	ImGui::Begin("Debug1");
 	// ImGui::Text("Kamata Trou %d.%d.%d", 2050, 12, 31);
 	// float3入力ボックス
@@ -96,7 +102,7 @@ void GameScene::Draw() {
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
 
-	model_->Draw(worldTransform_, viewProjection_, textureHandle_);
+	model_->Draw(worldTransform_, debugCamera_->GetViewProjection(), textureHandle_);
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
