@@ -51,7 +51,7 @@ void Player::Update() {
 
 	worldTransform_.translation_ = TransformCoord(move, translateMatrix);
 
-		const float kMoveLimitX = 34;
+	const float kMoveLimitX = 34;
 	const float kMoveLimitY = 18;
 
 	worldTransform_.translation_.x = max(worldTransform_.translation_.x, -kMoveLimitX);
