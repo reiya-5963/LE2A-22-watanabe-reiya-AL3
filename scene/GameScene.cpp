@@ -56,17 +56,15 @@ void GameScene::Update() {
 
 	if (isDebugCameraActive_) {
 		debugCamera_->Update();
-		viewProjection_.matView =
-		    debugCamera_->GetViewProjection().matView;
+		viewProjection_.matView = debugCamera_->GetViewProjection().matView;
 		viewProjection_.matProjection = debugCamera_->GetViewProjection().matProjection;
 		viewProjection_.TransferMatrix();
 	} else {
 
 		viewProjection_.UpdateMatrix();
 	}
-	
 
-	//自キャラの更新
+	// 自キャラの更新
 	player_->Update();
 }
 
