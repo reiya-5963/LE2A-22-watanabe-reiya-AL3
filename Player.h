@@ -7,12 +7,18 @@
 #include "ImGuiManager.h"
 #include "MyMath.h"
 #include "PlayerBullet.h"
+#include <list>
 
 /// <summary>
 /// 自キャラ
 /// </summary>
 class Player {
 public:
+
+
+	~Player();
+
+
 	/// <summary>
 	/// 初期化
 	/// </summary>
@@ -47,4 +53,6 @@ private:
 	Input* input_ = nullptr;
 
 	PlayerBullet* bullet_ = nullptr;
+
+	std::list<PlayerBullet*> bullets_;
 };
