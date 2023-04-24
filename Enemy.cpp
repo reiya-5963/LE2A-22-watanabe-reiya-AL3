@@ -12,6 +12,9 @@ void Enemy::Initialize(
 
 	worldTransform_.translation_ = position;
 	pApproachMove = &Enemy::ApproachMove;
+
+	
+
 }
 
 void Enemy::Update() { 
@@ -25,7 +28,7 @@ void Enemy::Update() {
 		LeaveMove();
 		break;
 	}*/
-	(this->*pApproachMove)();
+	(this->*spMoveTable[static_cast<size_t>(phase_)])();
 
 	worldTransform_.UpdateMatrix(); 
 }
@@ -48,3 +51,8 @@ void Enemy::LeaveMove() {
 	Vector3 leaveVelocity(-0.25f, 0.25f, 0);
 	worldTransform_.translation_ = MyMath::VecAdd(worldTransform_.translation_, leaveVelocity);
 }
+
+void (Enemy::*Enemy::spMoveTable[])() = {
+	&Enemy::ApproachMove,
+	&Enemy::LeaveMove
+};
