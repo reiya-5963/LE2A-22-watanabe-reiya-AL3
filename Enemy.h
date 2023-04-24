@@ -22,6 +22,9 @@ public:
 	void Update();
 	void Draw(ViewProjection& viewProjection);
 
+	void ApproachMove();
+	void LeaveMove();
+
 private:
 	WorldTransform worldTransform_;
 	Model* model_ = nullptr;
@@ -29,4 +32,6 @@ private:
 
 
 	Phase phase_ = Phase::Approach;
+
+	void (Enemy::*pApproachMove)();
 };
