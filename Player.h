@@ -28,6 +28,9 @@ public:
 	/// <param name= "viewProjection">ビュープロジェクション(参照渡し)</param>
 	void Draw(ViewProjection &viewProjection);
 
+
+	void Rotate();
+
 private:
 	//ワールド変換データ
 	WorldTransform worldTransform_;

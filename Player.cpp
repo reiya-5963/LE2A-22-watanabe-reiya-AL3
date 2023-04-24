@@ -47,7 +47,7 @@ void Player::Update() {
 		move.y -= kCharacterSpeed;
 	}
 
-	
+	Rotate();
 
 	worldTransform_.translation_ = TransformCoord(move, translateMatrix);
 
@@ -94,4 +94,17 @@ void Player::Draw(ViewProjection& viewProjection) {
 
 
 
+}
+
+
+void Player::Rotate() {
+	//
+	const float kRotSpeed = 0.02f;
+
+	//
+	if (input_->PushKey(DIK_A)) {
+		MakeRotateYMatrix(worldTransform_.rotation_.y -= kRotSpeed);
+	} else if (input_->PushKey(DIK_D)) {
+		MakeRotateYMatrix(worldTransform_.rotation_.y += kRotSpeed);
+	}
 }
