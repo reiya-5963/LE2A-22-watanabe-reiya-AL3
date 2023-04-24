@@ -14,9 +14,23 @@ void Enemy::Initialize(
 }
 
 void Enemy::Update() { 
-	const float kBulletSpeed = 0.5f;
-	Vector3 velocity(0, 0, -kBulletSpeed);
-	worldTransform_.translation_ = MyMath::VecAdd(worldTransform_.translation_, velocity);
+
+	switch (phase_) {
+	case Enemy::Phase::Approach:
+		Vector3 appVelocity(0, 0, -0.25f);
+		worldTransform_.translation_ = MyMath::VecAdd(worldTransform_.translation_, appVelocity);
+
+		if (worldTransform_.translation_.z < 0.0f) {
+			phase_ = Phase::Leave;
+		}
+
+		break;
+	case Enemy::Phase::Leave:
+		Vector3 leaveVelocity(-0.25f, 0.25f, 0);
+		worldTransform_.translation_ = MyMath::VecAdd(worldTransform_.translation_, leaveVelocity);
+
+		break;
+	}
 
 	worldTransform_.UpdateMatrix(); 
 }
