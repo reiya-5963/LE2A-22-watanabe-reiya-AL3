@@ -1,8 +1,6 @@
-#include <Player.h>
-#include <cassert>
-#include "ImGuiManager.h"
+#include "Player.h"
 
-#include "MyMath.h"
+
 
 void Player::Initialize(Model* model, uint32_t textureHandle) {
 	assert(model);
@@ -22,14 +20,15 @@ void Player::Initialize(Model* model, uint32_t textureHandle) {
 void Player::Update() { 
 
 	
-	Matrix4x4 scaleMatrix = MakeScaleMatrix(worldTransform_.scale_);
+	Matrix4x4 scaleMatrix = MyMath::MakeScaleMatrix(worldTransform_.scale_);
 
-	Matrix4x4 rotateMatrixX = MakeRotateXMatrix(worldTransform_.rotation_.x);
-	Matrix4x4 rotateMatrixY = MakeRotateYMatrix(worldTransform_.rotation_.y);
-	Matrix4x4 rotateMatrixZ = MakeRotateZMatrix(worldTransform_.rotation_.z);
-	Matrix4x4 rotateMatrixXYZ = Multiply(Multiply(rotateMatrixX, rotateMatrixY), rotateMatrixZ);
+	Matrix4x4 rotateMatrixX = MyMath::MakeRotateXMatrix(worldTransform_.rotation_.x);
+	Matrix4x4 rotateMatrixY = MyMath::MakeRotateYMatrix(worldTransform_.rotation_.y);
+	Matrix4x4 rotateMatrixZ = MyMath::MakeRotateZMatrix(worldTransform_.rotation_.z);
+	Matrix4x4 rotateMatrixXYZ =
+	    MyMath::Multiply(MyMath::Multiply(rotateMatrixX, rotateMatrixY), rotateMatrixZ);
 
-	Matrix4x4 translateMatrix = MakeTranslateMatrix(worldTransform_.translation_);
+	Matrix4x4 translateMatrix = MyMath::MakeTranslateMatrix(worldTransform_.translation_);
 	
 		Vector3 move = {0, 0, 0};
 
@@ -49,7 +48,14 @@ void Player::Update() {
 
 	Rotate();
 
-	worldTransform_.translation_ = TransformCoord(move, translateMatrix);
+	Attack();
+
+	if (bullet_) {
+		bullet_->Update();
+	}
+
+
+	worldTransform_.translation_ = MyMath::TransformCoord(move, translateMatrix);
 
 	const float kMoveLimitX = 34;
 	const float kMoveLimitY = 18;
@@ -73,26 +79,15 @@ void Player::Update() {
 
 	ImGui::End();
 
-
-
-
-
-
-
-
-	worldTransform_.matWorld_ = MakeAffineMatrix(
-	    worldTransform_.scale_, worldTransform_.rotation_, worldTransform_.translation_);
-
-	worldTransform_.TransferMatrix();
-
-	
-	
+	worldTransform_.UpdateMatrix(); 
 }
 
 void Player::Draw(ViewProjection& viewProjection) { 
 	model_->Draw(worldTransform_, viewProjection, textureHandle_);
 
-
+	if (bullet_) {
+		bullet_->Draw(viewProjection);
+	}
 
 }
 
@@ -103,8 +98,18 @@ void Player::Rotate() {
 
 	//
 	if (input_->PushKey(DIK_A)) {
-		MakeRotateYMatrix(worldTransform_.rotation_.y -= kRotSpeed);
+		MyMath::MakeRotateYMatrix(worldTransform_.rotation_.y -= kRotSpeed);
 	} else if (input_->PushKey(DIK_D)) {
-		MakeRotateYMatrix(worldTransform_.rotation_.y += kRotSpeed);
+		MyMath::MakeRotateYMatrix(worldTransform_.rotation_.y += kRotSpeed);
+	}
+}
+
+void Player::Attack() {
+	if (input_->PushKey(DIK_SPACE)) {
+	
+		PlayerBullet* newBullet = new PlayerBullet();
+		newBullet->Initialize(model_, worldTransform_.translation_);
+
+		bullet_ = newBullet;
 	}
 }

@@ -3,7 +3,10 @@
 #include "WorldTransform.h"
 #include "ViewProjection.h"
 #include "Input.h"
-
+#include <cassert>
+#include "ImGuiManager.h"
+#include "MyMath.h"
+#include "PlayerBullet.h"
 
 /// <summary>
 /// 自キャラ
@@ -31,6 +34,8 @@ public:
 
 	void Rotate();
 
+	void Attack();
+
 private:
 	//ワールド変換データ
 	WorldTransform worldTransform_;
@@ -41,5 +46,5 @@ private:
 	//キーボード入力
 	Input* input_ = nullptr;
 
-
+	PlayerBullet* bullet_ = nullptr;
 };
