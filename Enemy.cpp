@@ -11,10 +11,13 @@ void Enemy::Initialize(
 	worldTransform_.Initialize();
 
 	worldTransform_.translation_ = position;
-	pApproachMove = &Enemy::ApproachMove;
-
 	
+	state = new EnemyStateApproah();
+	state->SetEnemy(this);
 
+	/*pApproachMove = &Enemy::ApproachMove;
+	phase_ = Phase::Approach;*/
+	
 }
 
 void Enemy::Update() { 
@@ -28,7 +31,10 @@ void Enemy::Update() {
 		LeaveMove();
 		break;
 	}*/
-	(this->*spMoveTable[static_cast<size_t>(phase_)])();
+
+	//(this->*spMoveTable[static_cast<size_t>(phase_)])();
+
+	state->Update();
 
 	worldTransform_.UpdateMatrix(); 
 }
@@ -38,21 +44,36 @@ void Enemy::Draw(ViewProjection& viewProjection) {
 	model_->Draw(worldTransform_, viewProjection, textureHandle_);
 }
 
-void Enemy::ApproachMove() {
-	Vector3 appVelocity(0, 0, -0.25f);
-	worldTransform_.translation_ = MyMath::VecAdd(worldTransform_.translation_, appVelocity);
+//void (Enemy::*Enemy::spMoveTable[])() = {
+//	&Enemy::ApproachMove,
+//	&Enemy::LeaveMove
+//};
 
-	if (worldTransform_.translation_.z < 0.0f) {
-		phase_ = Phase::Leave;
+void Enemy::ChangeState(BaseEnemyState* newEnemyState) {
+	delete state;
+	state = newEnemyState;
+	state->SetEnemy(this);
+}
+
+void Enemy::SetPosition(Vector3 velosity) {
+	worldTransform_.translation_ = MyMath::VecAdd(worldTransform_.translation_, velosity);
+}
+
+
+////****EnemyState****////
+
+
+void EnemyStateApproah::Update() {
+	Vector3 appVelocity(0, 0, -0.25f);
+	enemy_->SetPosition(appVelocity);
+	if (enemy_->GetWT().translation_.z < 0.0f) {
+		enemy_->ChangeState(new EnemyStateLeave);
 	}
 }
 
-void Enemy::LeaveMove() {
+void EnemyStateLeave::Update() {
 	Vector3 leaveVelocity(-0.25f, 0.25f, 0);
-	worldTransform_.translation_ = MyMath::VecAdd(worldTransform_.translation_, leaveVelocity);
+	enemy_->SetPosition(leaveVelocity);
 }
 
-void (Enemy::*Enemy::spMoveTable[])() = {
-	&Enemy::ApproachMove,
-	&Enemy::LeaveMove
-};
+
