@@ -61,14 +61,9 @@ private:
 
 	BaseEnemyState* state;
 
-
-	Phase phase_;
-
+	/*Phase phase_;
 	void (Enemy::*pApproachMove)();
-
-	static void (Enemy::*spMoveTable[])();
-	
-	
+	static void (Enemy::*spMoveTable[])();*/
 };
 
 

@@ -26,12 +26,6 @@ void Player::Update() {
 	
 	Matrix4x4 scaleMatrix = MyMath::MakeScaleMatrix(worldTransform_.scale_);
 
-	Matrix4x4 rotateMatrixX = MyMath::MakeRotateXMatrix(worldTransform_.rotation_.x);
-	Matrix4x4 rotateMatrixY = MyMath::MakeRotateYMatrix(worldTransform_.rotation_.y);
-	Matrix4x4 rotateMatrixZ = MyMath::MakeRotateZMatrix(worldTransform_.rotation_.z);
-	Matrix4x4 rotateMatrixXYZ =
-	    MyMath::Multiply(MyMath::Multiply(rotateMatrixX, rotateMatrixY), rotateMatrixZ);
-
 	Matrix4x4 translateMatrix = MyMath::MakeTranslateMatrix(worldTransform_.translation_);
 	
 
@@ -49,13 +43,15 @@ void Player::Update() {
 
 	if (input_->PushKey(DIK_LEFT)) {
 		move.x -= kCharacterSpeed;
-	} else if (input_->PushKey(DIK_RIGHT)) {
+	}
+	else if (input_->PushKey(DIK_RIGHT)) {
 		move.x += kCharacterSpeed;
 	}
 
 	if (input_->PushKey(DIK_UP)) {
 		move.y += kCharacterSpeed;
-	} else if (input_->PushKey(DIK_DOWN)) {
+	} 
+	else if (input_->PushKey(DIK_DOWN)) {
 		move.y -= kCharacterSpeed;
 	}
 
@@ -79,7 +75,7 @@ void Player::Update() {
 	worldTransform_.translation_.y = min(worldTransform_.translation_.y, +kMoveLimitY);
 
 
-	float pos[3]{};
+	/*float pos[3]{};
 	pos[0] = worldTransform_.translation_.x;
 	pos[1] = worldTransform_.translation_.y;
 	pos[2] = worldTransform_.translation_.z;
@@ -90,7 +86,7 @@ void Player::Update() {
 	worldTransform_.translation_.y = pos[1];
 	worldTransform_.translation_.z = pos[2];
 
-	ImGui::End();
+	ImGui::End();*/
 
 	worldTransform_.UpdateMatrix(); 
 }
@@ -111,7 +107,7 @@ void Player::Rotate() {
 
 	//
 	if (input_->PushKey(DIK_A)) {
-		MyMath::MakeRotateYMatrix(worldTransform_.rotation_.y -= kRotSpeed);
+		worldTransform_.rotation_.y -= kRotSpeed;
 	} else if (input_->PushKey(DIK_D)) {
 		MyMath::MakeRotateYMatrix(worldTransform_.rotation_.y += kRotSpeed);
 	}

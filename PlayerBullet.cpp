@@ -20,7 +20,7 @@ void PlayerBullet::Update() {
 	if (--deathTimer_ <= 0) {
 		isDead_ = true;
 	}
-	worldTransform_.translation_ = MyMath::VecAdd(worldTransform_.translation_, velocity_);
+	worldTransform_.translation_ = worldTransform_.translation_ + velocity_;
 
 	worldTransform_.UpdateMatrix(); 
 }

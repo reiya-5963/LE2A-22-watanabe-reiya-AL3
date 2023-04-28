@@ -182,38 +182,50 @@ public:
 		}
 		return result;*/
 
-		Matrix4x4 result;
+		Matrix4x4 result{};
+		Matrix4x4 translateMatrix = MakeTranslateMatrix(translate);
 
+		Matrix4x4 scaleMatrix = MakeScaleMatrix(scale);
 		Matrix4x4 rotateXYZMatrix = Multiply(
 		    MakeRotateXMatrix(rotate.x),
 		    Multiply(MakeRotateYMatrix(rotate.y), MakeRotateZMatrix(rotate.z)));
 
-		result.m[0][0] = rotateXYZMatrix.m[0][0] * scale.x;
-		result.m[0][1] = rotateXYZMatrix.m[0][1] * scale.x;
-		result.m[0][2] = rotateXYZMatrix.m[0][2] * scale.x;
+		result.m[0][0] = rotateXYZMatrix.m[0][0] * scaleMatrix.m[0][0];
+		result.m[0][1] = rotateXYZMatrix.m[0][1] * scaleMatrix.m[0][0];
+		result.m[0][2] = rotateXYZMatrix.m[0][2] * scaleMatrix.m[0][0];
 		result.m[0][3] = 0;
 
-		result.m[1][0] = rotateXYZMatrix.m[1][0] * scale.y;
-		result.m[1][1] = rotateXYZMatrix.m[1][1] * scale.y;
-		result.m[1][2] = rotateXYZMatrix.m[1][2] * scale.y;
+		result.m[1][0] = rotateXYZMatrix.m[1][0] * scaleMatrix.m[1][1];
+		result.m[1][1] = rotateXYZMatrix.m[1][1] * scaleMatrix.m[1][1];
+		result.m[1][2] = rotateXYZMatrix.m[1][2] * scaleMatrix.m[1][1];
 		result.m[1][3] = 0;
 
-		result.m[2][0] = rotateXYZMatrix.m[2][0] * scale.z;
-		result.m[2][1] = rotateXYZMatrix.m[2][1] * scale.z;
-		result.m[2][2] = rotateXYZMatrix.m[2][2] * scale.z;
+		result.m[2][0] = rotateXYZMatrix.m[2][0] * scaleMatrix.m[3][3];
+		result.m[2][1] = rotateXYZMatrix.m[2][1] * scaleMatrix.m[3][3];
+		result.m[2][2] = rotateXYZMatrix.m[2][2] * scaleMatrix.m[3][3];
 		result.m[2][3] = 0;
 
-		result.m[3][0] = translate.x;
-		result.m[3][1] = translate.y;
-		result.m[3][2] = translate.z;
+		result.m[3][0] = translateMatrix.m[3][0];
+		result.m[3][1] = translateMatrix.m[3][1];
+		result.m[3][2] = translateMatrix.m[3][2];
 		result.m[3][3] = 1;
 
 		return result;
 	}
 
-private: 
+	/*static Vector3 operator+(const Vector3 v1, const Vector3 v2) {
+		Vector3 result{};
+		result.x = v2.x + v1.x;
+		result.y = v2.x + v1.y;
+		result.z = v2.x + v1.z;
+		return result;
+	}*/
+
+	
+ private: 
 
 };
+
 
 
 

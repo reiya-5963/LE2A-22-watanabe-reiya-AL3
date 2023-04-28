@@ -56,7 +56,7 @@ void Enemy::ChangeState(BaseEnemyState* newEnemyState) {
 }
 
 void Enemy::SetPosition(Vector3 velosity) {
-	worldTransform_.translation_ = MyMath::VecAdd(worldTransform_.translation_, velosity);
+	worldTransform_.translation_ = worldTransform_.translation_ + velosity;
 }
 
 

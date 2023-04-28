@@ -32,7 +32,7 @@ private:
 	Model* model_ = nullptr;
 	uint32_t textureHandle_ = 0u;
 	
-	Vector3 velocity_;
+	Vector3 velocity_{};
 
 	static const int32_t kLifeTime = 60 * 5;
 
