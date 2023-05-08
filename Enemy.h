@@ -2,6 +2,7 @@
 #include "Model.h"
 #include "WorldTransform.h"
 #include "MyMath.h"
+#include "EnemyBullet.h"
 #include <cassert>
 class Enemy;
 
@@ -54,12 +55,16 @@ public:
 
 	void SetPosition(Vector3 velosity);
 
+	void Fire();
+
 private:
 	WorldTransform worldTransform_;
 	Model* model_ = nullptr;
 	uint32_t textureHandle_ = 0u;
 
 	BaseEnemyState* state;
+
+	EnemyBullet* bullet_ = nullptr;
 
 	/*Phase phase_;
 	void (Enemy::*pApproachMove)();
