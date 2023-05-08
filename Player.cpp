@@ -75,7 +75,7 @@ void Player::Update() {
 	worldTransform_.translation_.y = min(worldTransform_.translation_.y, +kMoveLimitY);
 
 
-	/*float pos[3]{};
+	float pos[3]{};
 	pos[0] = worldTransform_.translation_.x;
 	pos[1] = worldTransform_.translation_.y;
 	pos[2] = worldTransform_.translation_.z;
@@ -86,7 +86,7 @@ void Player::Update() {
 	worldTransform_.translation_.y = pos[1];
 	worldTransform_.translation_.z = pos[2];
 
-	ImGui::End();*/
+	ImGui::End();
 
 	worldTransform_.UpdateMatrix(); 
 }
