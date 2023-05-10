@@ -1,9 +1,11 @@
 #pragma once
 #include "Model.h"
 #include "WorldTransform.h"
+#include "ViewProjection.h"
 #include "MyMath.h"
 #include "EnemyBullet.h"
 #include <cassert>
+#include <list>
 class Enemy;
 
 
@@ -43,7 +45,7 @@ class Enemy {
 	};
 
 public:
-	~Enemy() { delete state; }
+	~Enemy();
 
 	void Initialize(Model* model, const Vector3& position);
 	void Update();
@@ -57,6 +59,19 @@ public:
 
 	void Fire();
 
+	void ApproachInit();
+
+	/*int32_t GetTimer() {
+		return fireTimer;
+	}
+
+	void SetTimer(int32_t timer) { 
+		fireTimer = timer;
+	}*/
+
+	static const int kFireInterval = 60;
+	int32_t fireTimer = 0;
+
 private:
 	WorldTransform worldTransform_;
 	Model* model_ = nullptr;
@@ -66,10 +81,16 @@ private:
 
 	EnemyBullet* bullet_ = nullptr;
 
+	std::list<EnemyBullet*> bullets_;
+
+
 	/*Phase phase_;
 	void (Enemy::*pApproachMove)();
 	static void (Enemy::*spMoveTable[])();*/
 };
+
+
+
 
 
 
