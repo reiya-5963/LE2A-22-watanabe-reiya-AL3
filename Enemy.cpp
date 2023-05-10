@@ -90,6 +90,16 @@ void Enemy::ApproachInit() {
 
 }
 
+
+void Enemy::Reset() {
+	Fire();
+	
+	//
+	timedCells_.push_back(
+		new TimedCell(std::bind(&Reset(), this), kFireInterval));
+
+}
+
 ////****EnemyState****////
 
 

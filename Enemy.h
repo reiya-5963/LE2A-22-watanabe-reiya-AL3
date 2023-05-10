@@ -6,6 +6,7 @@
 #include "EnemyBullet.h"
 #include <cassert>
 #include <list>
+#include "TimedCell.h"
 class Enemy;
 
 
@@ -53,7 +54,7 @@ public:
 
 	void ChangeState(BaseEnemyState* newEnemyState);
 
-	WorldTransform GetWT() {return worldTransform_;}
+	WorldTransform GetWT() { return worldTransform_; }
 
 	void SetPosition(Vector3 velosity);
 
@@ -62,15 +63,17 @@ public:
 	void ApproachInit();
 
 	/*int32_t GetTimer() {
-		return fireTimer;
+	    return fireTimer;
 	}
 
-	void SetTimer(int32_t timer) { 
-		fireTimer = timer;
+	void SetTimer(int32_t timer) {
+	    fireTimer = timer;
 	}*/
 
 	static const int kFireInterval = 60;
 	int32_t fireTimer = 0;
+
+	void Reset();
 
 private:
 	WorldTransform worldTransform_;
@@ -83,7 +86,7 @@ private:
 
 	std::list<EnemyBullet*> bullets_;
 
-
+	std::list < TimedCell*> timedCells_;
 	/*Phase phase_;
 	void (Enemy::*pApproachMove)();
 	static void (Enemy::*spMoveTable[])();*/
