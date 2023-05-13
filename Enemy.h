@@ -33,7 +33,7 @@ public:
 	void Update();
 };
 
-
+class Player;
 
 /// <summary>
 /// enemy
@@ -72,6 +72,11 @@ public:
 	static const int kFireInterval = 60;
 	int32_t fireTimer = 0;
 
+	void SetPlayer(Player* player) { player_ = player; }
+
+	Vector3 GetWorldPosition();
+
+
 private:
 	WorldTransform worldTransform_;
 	Model* model_ = nullptr;
@@ -83,7 +88,7 @@ private:
 
 	std::list<EnemyBullet*> bullets_;
 
-
+	Player* player_ = nullptr;
 	/*Phase phase_;
 	void (Enemy::*pApproachMove)();
 	static void (Enemy::*spMoveTable[])();*/

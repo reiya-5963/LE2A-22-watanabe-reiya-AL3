@@ -47,6 +47,7 @@ void GameScene::Initialize() {
 
 		// 自キャラの初期化
 	enemy_->Initialize(model_,  {0, 2, 10});
+	enemy_->SetPlayer(player_);
 }
 
 void GameScene::Update() {

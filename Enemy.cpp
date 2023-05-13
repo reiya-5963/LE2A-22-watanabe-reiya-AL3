@@ -1,4 +1,5 @@
 #include "Enemy.h"
+#include "Player.h"
 
 Enemy::~Enemy() {
 	delete state;
@@ -28,7 +29,6 @@ void Enemy::Initialize(
 }
 
 void Enemy::Update() { 
-
 	/*switch (phase_) {
 	case Enemy::Phase::Approach:
 		ApproachMove();
@@ -74,10 +74,19 @@ void Enemy::SetPosition(Vector3 velosity) {
 }
 
 void Enemy::Fire() {
-	const float kBulletSpeed = -1.0f;
-	Vector3 velocity(0, 0, kBulletSpeed);
+	assert(player_);
+	const float kBulletSpeed = 1.0f;
+
+	Vector3 plaPos = player_->GetWorldPosition();
+	Vector3 enePos = GetWorldPosition();
+	Vector3 velocity = plaPos - enePos;
+	velocity = MyMath::Normalize(velocity);
+	velocity.x *= kBulletSpeed;
+	velocity.y *= kBulletSpeed;
+	velocity.z *= kBulletSpeed;
 
 	velocity = MyMath::TransformNormal(velocity, worldTransform_.matWorld_);
+
 
 	EnemyBullet* newBullet = new EnemyBullet();
 	newBullet->Initialize(model_, worldTransform_.translation_, velocity);
@@ -90,10 +99,19 @@ void Enemy::ApproachInit() {
 
 }
 
+Vector3 Enemy::GetWorldPosition() {
+	Vector3 worldPos;
+
+	worldPos.x = worldTransform_.translation_.x;
+	worldPos.y = worldTransform_.translation_.y;
+	worldPos.z = worldTransform_.translation_.z;
+
+	return worldPos;
+}
+
+
+
 ////****EnemyState****////
-
-
-
 
 void EnemyStateApproah::Update() {
 	int32_t timer_ = enemy_->fireTimer;

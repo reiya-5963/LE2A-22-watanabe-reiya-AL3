@@ -213,13 +213,21 @@ public:
 		return result;
 	}
 
-	/*static Vector3 operator+(const Vector3 v1, const Vector3 v2) {
-		Vector3 result{};
-		result.x = v2.x + v1.x;
-		result.y = v2.x + v1.y;
-		result.z = v2.x + v1.z;
+	static float Length(const Vector3& v) {
+		float result{};
+		result = sqrtf(v.x * v.x + v.y * v.y + v.z * v.z);
+
 		return result;
-	}*/
+	}
+
+	static Vector3 Normalize(const Vector3& v) {
+		Vector3 result{};
+		result.x = v.x / Length(v);
+		result.y = v.y / Length(v);
+		result.z = v.z / Length(v);
+
+		return result;
+	}
 
 	
  private: 
