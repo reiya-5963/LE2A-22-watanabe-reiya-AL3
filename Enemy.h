@@ -78,6 +78,7 @@ public:
 
 	void OnCollision();
 
+	const std::list<EnemyBullet*>& GetBullets() { return bullets_; }
 
 private:
 	WorldTransform worldTransform_;

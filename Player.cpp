@@ -130,10 +130,16 @@ void Player::Attack() {
 
 Vector3 Player::GetWorldPosition() { 
 	Vector3 worldPos;
-	
-	worldPos.x = worldTransform_.translation_.x;
+
+	worldPos = MyMath::TransformCoord(worldTransform_.translation_, worldTransform_.matWorld_);
+
+	/*worldPos.x = worldTransform_.translation_.x;
 	worldPos.y = worldTransform_.translation_.y;
-	worldPos.z = worldTransform_.translation_.z;
+	worldPos.z = worldTransform_.translation_.z;*/
 
 	return worldPos;
+}
+
+void Player::OnCollision() {
+
 }

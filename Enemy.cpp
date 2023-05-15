@@ -38,8 +38,14 @@ void Enemy::Update() {
 		LeaveMove();
 		break;
 	}*/
-
 	//(this->*spMoveTable[static_cast<size_t>(phase_)])();
+	bullets_.remove_if([](EnemyBullet* bullet) {
+		if (bullet->IsDead()) {
+			delete bullet;
+			return true;
+		}
+		return false;
+	});
 
 	state->Update();
 
@@ -102,16 +108,19 @@ void Enemy::ApproachInit() {
 Vector3 Enemy::GetWorldPosition() {
 	Vector3 worldPos;
 
-	worldPos.x = worldTransform_.translation_.x;
+	worldPos = MyMath::TransformCoord(worldTransform_.translation_, worldTransform_.matWorld_);
+
+	/*worldPos.x = worldTransform_.translation_.x;
 	worldPos.y = worldTransform_.translation_.y;
-	worldPos.z = worldTransform_.translation_.z;
+	worldPos.z = worldTransform_.translation_.z;*/
 
 	return worldPos;
 }
 
+void Enemy::OnCollision() {
 
-
-////****EnemyState****////
+}
+	////****EnemyState****////
 
 void EnemyStateApproah::Update() {
 	int32_t timer_ = enemy_->fireTimer;
