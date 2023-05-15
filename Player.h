@@ -44,6 +44,8 @@ public:
 
 	Vector3 GetWorldPosition();
 
+	void OnCollision();
+
 private:
 	//ワールド変換データ
 	WorldTransform worldTransform_;
