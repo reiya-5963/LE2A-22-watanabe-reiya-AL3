@@ -36,11 +36,12 @@ void EnemyBullet::OnCollision() {
 Vector3 EnemyBullet::GetWorldPosition() {
 	Vector3 worldPos;
 
-	worldPos = MyMath::TransformCoord(worldTransform_.translation_, worldTransform_.matWorld_);
+	worldPos.x = worldTransform_.matWorld_.m[3][0];
+	worldPos.y = worldTransform_.matWorld_.m[3][1];
+	worldPos.z = worldTransform_.matWorld_.m[3][2];
 
 	/*worldPos.x = worldTransform_.translation_.x;
 	worldPos.y = worldTransform_.translation_.y;
 	worldPos.z = worldTransform_.translation_.z;*/
-
 	return worldPos;
 }
