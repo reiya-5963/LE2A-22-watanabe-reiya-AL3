@@ -8,7 +8,7 @@
 GameScene::GameScene() {}
 
 GameScene::~GameScene() {
-	delete model_; 
+	delete model_;
 	delete player_;
 	delete enemy_;
 	delete debugCamera_;
@@ -20,15 +20,15 @@ void GameScene::Initialize() {
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
 
-	//ファイル名を指定してテクスチャを読み込む
+	// ファイル名を指定してテクスチャを読み込む
 	textureHandle_ = TextureManager::Load("sample.png");
 
-	//3Dモデルの生成
+	// 3Dモデルの生成
 	model_ = Model::Create();
 
-	//ビュープロジェクションの初期化
+	// ビュープロジェクションの初期化
 	viewProjection_.Initialize();
-	
+
 	//
 	debugCamera_ = new DebugCamera(1280, 720);
 
@@ -37,23 +37,23 @@ void GameScene::Initialize() {
 
 	AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection_);
 
-	//自キャラの生成
+	// 自キャラの生成
 	player_ = new Player();
 
 	enemy_ = new Enemy();
 
-	//自キャラの初期化
+	// 自キャラの初期化
 	player_->Initialize(model_, textureHandle_);
 
-		// 自キャラの初期化
-	enemy_->Initialize(model_,  {0, 2, 10});
+	// 自キャラの初期化
+	enemy_->Initialize(model_, {0, 2, 10});
 	enemy_->SetPlayer(player_);
 }
 
 void GameScene::Update() {
-#ifdef _DEBUG
+#ifdef _DEBUG 
 	if (input_->TriggerKey(DIK_W)) {
-		isDebugCameraActive_ = true;
+		isDebugCameraActive_ = true; 
 	}
 #endif
 	ImGui::Begin("Debug");
@@ -104,7 +104,7 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
-	// 自キャラの描画
+ 	// 自キャラの描画
 	player_->Draw(viewProjection_);
 	enemy_->Draw(viewProjection_);
 
@@ -127,7 +127,7 @@ void GameScene::Draw() {
 #pragma endregion
 }
 
-void GameScene::CheckAllCollisions() { 
+void GameScene::CheckAllCollisions() {
 	Vector3 posA, posB;
 
 
@@ -142,7 +142,7 @@ void GameScene::CheckAllCollisions() {
 
 		float Judge = (posB.x - posA.x) * (posB.x - posA.x) +
 		              (posB.y - posA.y) * (posB.y - posA.y) +
-					  (posB.z - posA.z) * (posB.z - posA.z);
+						(posB.z - posA.z) * (posB.z - posA.z);
 
 		float playerRad = 2.5f;
 		float enemyRad = 2.5f;
@@ -154,7 +154,7 @@ void GameScene::CheckAllCollisions() {
 #pragma endregion
 
 #pragma region 自弾と敵キャラ
-	
+
 
 	for (PlayerBullet* plaBullet : playerBullets) {
 		posB = plaBullet->GetWorldPosition();

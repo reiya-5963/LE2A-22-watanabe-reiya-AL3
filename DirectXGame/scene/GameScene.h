@@ -51,19 +51,19 @@ private: // メンバ変数
 	Input* input_ = nullptr;
 	Audio* audio_ = nullptr;
 
-	//テクスチャハンドル
+	// テクスチャハンドル
 	uint32_t textureHandle_ = 0;
-	
-	//3Dモデルデータ
+
+	// 3Dモデルデータ
 	Model* model_ = nullptr;
 
-	//ビュープロジェクション
+	// ビュープロジェクション
 	ViewProjection viewProjection_;
 
 	Player* player_ = nullptr;
 	Enemy* enemy_ = nullptr;
-	
-	//デバッグカメラ有効
+
+	// デバッグカメラ有効
 	bool isDebugCameraActive_ = false;
 
 	//
