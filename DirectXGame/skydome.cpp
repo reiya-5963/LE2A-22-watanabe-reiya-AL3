@@ -1,9 +1,20 @@
-#include "skydome.h"
+#include "Skydome.h"
 
-void skydome::Initialize() {
+void Skydome::Initialize(Model* model, const Vector3& position) { 
+	assert(model);
+	model_ = model;
+
+	worldTransform_.Initialize();
+	worldTransform_.translation_ = position;
 
 }
 
-void skydome::Update() {}
+void Skydome::Update() {
 
-void skydome::Draw() {}
+
+worldTransform_.UpdateMatrix();
+}
+
+void Skydome::Draw(ViewProjection& viewProjection) { 
+	model_->Draw(worldTransform_, viewProjection);
+}

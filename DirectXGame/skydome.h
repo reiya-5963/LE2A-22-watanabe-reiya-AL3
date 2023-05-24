@@ -1,15 +1,15 @@
 #pragma once
 #include "Model.h"
-
+#include <cassert>
 #include "WorldTransform.h"
 
-class skydome {
+class Skydome {
 public:
-	void Initialize();
+	void Initialize(Model* model, const Vector3& position);
 
 	void Update();
 
-	void Draw();
+	void Draw(ViewProjection& viewProjection);
 
 private:
 	WorldTransform worldTransform_;

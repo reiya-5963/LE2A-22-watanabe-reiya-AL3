@@ -12,6 +12,7 @@ GameScene::~GameScene() {
 	delete player_;
 	delete enemy_;
 	delete debugCamera_;
+	delete skydome_;
 }
 
 void GameScene::Initialize() {
@@ -27,7 +28,9 @@ void GameScene::Initialize() {
 	model_ = Model::Create();
 
 	// ビュープロジェクションの初期化
+//	viewProjection_.farZ = 50.0f;
 	viewProjection_.Initialize();
+	
 
 	//
 	debugCamera_ = new DebugCamera(1280, 720);
@@ -42,12 +45,18 @@ void GameScene::Initialize() {
 
 	enemy_ = new Enemy();
 
+	skydome_ = new Skydome();
+
 	// 自キャラの初期化
 	player_->Initialize(model_, textureHandle_);
 
 	// 自キャラの初期化
 	enemy_->Initialize(model_, {0, 2, 10});
 	enemy_->SetPlayer(player_);
+
+	modelSkydome_ = Model::CreateFromOBJ("skydome", true);
+
+	skydome_->Initialize(modelSkydome_, {0, 0, 0});
 }
 
 void GameScene::Update() {
@@ -74,6 +83,7 @@ void GameScene::Update() {
 	player_->Update();
 
 	enemy_->Update();
+	skydome_->Update();
 
 	CheckAllCollisions();
 }
@@ -107,6 +117,7 @@ void GameScene::Draw() {
  	// 自キャラの描画
 	player_->Draw(viewProjection_);
 	enemy_->Draw(viewProjection_);
+	skydome_->Draw(viewProjection_);
 
 
 	// 3Dオブジェクト描画後処理
