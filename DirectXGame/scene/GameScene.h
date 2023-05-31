@@ -12,7 +12,7 @@
 #include <Player.h>
 #include <Enemy.h>
 #include <Skydome.h>
-
+#include <RailCamera.h>
 
 /// <summary>
 /// ゲームシーン
@@ -66,6 +66,8 @@ private: // メンバ変数
 	Skydome* skydome_ = nullptr;
 
 	Model* modelSkydome_ = nullptr;
+
+	RailCamera* railCamera_ = nullptr;
 
 	// デバッグカメラ有効
 	bool isDebugCameraActive_ = false;

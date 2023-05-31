@@ -13,6 +13,7 @@ GameScene::~GameScene() {
 	delete enemy_;
 	delete debugCamera_;
 	delete skydome_;
+	delete railCamera_;
 }
 
 void GameScene::Initialize() {
@@ -57,6 +58,11 @@ void GameScene::Initialize() {
 	modelSkydome_ = Model::CreateFromOBJ("skydome", true);
 
 	skydome_->Initialize(modelSkydome_, {0, 0, 0});
+
+	railCamera_ = new RailCamera();
+	railCamera_->Initialize({0, 0, -100.0f}, player_->GetWorldMatrix().rotation_);
+
+	player_->SetParent(&railCamera_->GetWorldMatrix());
 }
 
 void GameScene::Update() {
@@ -69,21 +75,29 @@ void GameScene::Update() {
 	ImGui::Text("isDebugCameraActive : %d", isDebugCameraActive_);
 	ImGui::End();
 
+		// 自キャラの更新
+	player_->Update();
+
+	enemy_->Update();
+	skydome_->Update();
+
 	if (isDebugCameraActive_) {
 		debugCamera_->Update();
 		viewProjection_.matView = debugCamera_->GetViewProjection().matView;
 		viewProjection_.matProjection = debugCamera_->GetViewProjection().matProjection;
 		viewProjection_.TransferMatrix();
-	} else {
-
-		viewProjection_.UpdateMatrix();
+	} 
+	else {
+		railCamera_->Update();
+		viewProjection_.matView = railCamera_->GetViewProjection().matView;
+		viewProjection_.matProjection = railCamera_->GetViewProjection().matProjection;
+		viewProjection_.TransferMatrix();
+		//viewProjection_.UpdateMatrix();
 	}
+	
 
-	// 自キャラの更新
-	player_->Update();
 
-	enemy_->Update();
-	skydome_->Update();
+
 
 	CheckAllCollisions();
 }

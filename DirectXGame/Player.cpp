@@ -8,6 +8,7 @@ Player::~Player() {
 
 void Player::Initialize(Model* model, uint32_t textureHandle) {
 	assert(model);
+	worldTransform_.translation_.z = 50.0f;
 
 	
 	model_ = model;
@@ -16,8 +17,6 @@ void Player::Initialize(Model* model, uint32_t textureHandle) {
 	worldTransform_.Initialize();
 
 	input_ = Input::GetInstance();
-
-
 }
 
 
@@ -37,7 +36,7 @@ void Player::Update() {
 		return false;
 	});
 
-		Vector3 move = {0, 0, 0};
+	Vector3 move = {0, 0, 0};
 
 	const float kCharacterSpeed = 0.2f;
 
@@ -55,16 +54,20 @@ void Player::Update() {
 		move.y -= kCharacterSpeed;
 	}
 
+	worldTransform_.translation_ = MyMath::TransformCoord(move, translateMatrix);
+
 	Rotate();
 
 	Attack();
+
+	worldTransform_.UpdateMatrix(); 
+
 
 	for (PlayerBullet* bullet : bullets_) {
 		bullet->Update();
 	}
 
 
-	worldTransform_.translation_ = MyMath::TransformCoord(move, translateMatrix);
 
 	const float kMoveLimitX = 34;
 	const float kMoveLimitY = 18;
@@ -75,20 +78,10 @@ void Player::Update() {
 	worldTransform_.translation_.y = min(worldTransform_.translation_.y, +kMoveLimitY);
 
 
-	float pos[3]{};
-	pos[0] = worldTransform_.translation_.x;
-	pos[1] = worldTransform_.translation_.y;
-	pos[2] = worldTransform_.translation_.z;
-
 	ImGui::Begin("Debug");
-	ImGui::SliderFloat3("Player", pos, -500.0f, 500.0f);
-	worldTransform_.translation_.x = pos[0];
-	worldTransform_.translation_.y = pos[1];
-	worldTransform_.translation_.z = pos[2];
-
+	ImGui::SliderFloat3("Player", &worldTransform_.translation_.x, -500.0f, 500.0f);
 	ImGui::End();
 
-	worldTransform_.UpdateMatrix(); 
 }
 
 void Player::Draw(ViewProjection& viewProjection) { 
@@ -104,12 +97,12 @@ void Player::Draw(ViewProjection& viewProjection) {
 void Player::Rotate() {
 	//
 	const float kRotSpeed = 0.02f;
-
+	
 	//
 	if (input_->PushKey(DIK_A)) {
-		worldTransform_.rotation_.y -= kRotSpeed;
+		worldTransform_.rotation_.y -= kRotSpeed; 
 	} else if (input_->PushKey(DIK_D)) {
-		MyMath::MakeRotateYMatrix(worldTransform_.rotation_.y += kRotSpeed);
+		worldTransform_.rotation_.y += kRotSpeed;
 	}
 }
 
@@ -117,12 +110,12 @@ void Player::Attack() {
 	if (input_->TriggerKey(DIK_SPACE)) {
 
 		const float kBulletSpeed = 1.0f;
-		Vector3 velocity(0, 0, kBulletSpeed);
+		Vector3     velocity(0, 0, kBulletSpeed);
 
 		velocity = MyMath::TransformNormal(velocity, worldTransform_.matWorld_);
 
 		PlayerBullet* newBullet = new PlayerBullet();
-		newBullet->Initialize(model_, worldTransform_.translation_, velocity);
+		newBullet->Initialize(model_, GetWorldPosition(), velocity);
 
 		bullets_.push_back(newBullet);
 	}

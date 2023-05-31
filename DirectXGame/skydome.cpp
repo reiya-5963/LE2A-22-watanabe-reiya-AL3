@@ -12,7 +12,7 @@ void Skydome::Initialize(Model* model, const Vector3& position) {
 void Skydome::Update() {
 
 
-worldTransform_.UpdateMatrix();
+	worldTransform_.UpdateMatrix();
 }
 
 void Skydome::Draw(ViewProjection& viewProjection) { 

@@ -48,6 +48,10 @@ public:
 
 	const std::list<PlayerBullet*>& GetBullets() { return bullets_; }
 
+	void SetParent(const WorldTransform* parent) { worldTransform_.parent_ = parent;
+	}
+	WorldTransform& GetWorldMatrix() { return worldTransform_; }
+
 private:
 	//ワールド変換データ
 	WorldTransform worldTransform_;
