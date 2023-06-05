@@ -8,6 +8,7 @@
 #include "MyMath.h"
 #include "PlayerBullet.h"
 #include <list>
+#include "Sprite.h"
 
 /// <summary>
 /// 自キャラ
@@ -29,7 +30,7 @@ public:
 	/// <summary>
 	/// 更新
 	/// </summary>
-	void Update();
+	void Update(ViewProjection& viewProjection);
 
 	/// <summary>
 	/// 描画
@@ -50,7 +51,20 @@ public:
 
 	void SetParent(const WorldTransform* parent) { worldTransform_.parent_ = parent;
 	}
-	WorldTransform& GetWorldMatrix() { return worldTransform_; }
+	WorldTransform& GetWorldMatrix() { 
+		/*if (worldTransform_.parent_) {
+			worldTransform_.matWorld_ =
+			    MyMath::MMMultiply(worldTransform_.matWorld_, worldTransform_.parent_->matWorld_);
+
+		}*/
+		return worldTransform_;
+	}
+
+	void SetTexReticle(uint32_t texReticle) { 
+		texReticle_ = texReticle;
+	}
+
+	void DrawUI();
 
 private:
 	//ワールド変換データ
@@ -65,4 +79,9 @@ private:
 	PlayerBullet* bullet_ = nullptr;
 
 	std::list<PlayerBullet*> bullets_;
+
+	//
+	WorldTransform worldTransform3DReticle_;
+	uint32_t texReticle_ = 0;
+	Sprite* sprite2DReticle_ = nullptr;
 };

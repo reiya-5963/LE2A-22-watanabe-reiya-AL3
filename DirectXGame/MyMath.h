@@ -34,7 +34,7 @@ public:
 		return result;
 	}
 
-	static Matrix4x4 Multiply(const Matrix4x4& m1, const Matrix4x4& m2) {
+	static Matrix4x4 MMMultiply(const Matrix4x4& m1, const Matrix4x4& m2) {
 		Matrix4x4 result{};
 
 		for (int row = 0; row < 4; row++) {
@@ -75,7 +75,22 @@ public:
 
 		return result;
 	}
+	static Vector3 FVMultiply(const float& v1, const Vector3& v2) {
+		Vector3 result{};
+		result.x = v1 * v2.x;
+		result.y = v1 * v2.y;
+		result.z = v1 * v2.z;
+		return result;
+	}
+	static Vector3 MVMultiply(const Vector3& v, const Matrix4x4& m) {
+		Vector3 result{};
 
+		result.x = m.m[0][0] * v.x + m.m[0][1] * v.y + m.m[0][2] * v.z;
+		result.y = m.m[1][0] * v.x + m.m[1][1] * v.y + m.m[1][2] * v.z;
+		result.z = m.m[2][0] * v.x + m.m[2][1] * v.y + m.m[2][2] * v.z;
+
+		return result;
+	}
 	static Matrix4x4 MakeTranslateMatrix(const Vector3& translate) {
 		Matrix4x4 result{};
 
@@ -197,11 +212,11 @@ public:
 		Matrix4x4 translateMatrix = MakeTranslateMatrix(translate);
 
 		Matrix4x4 scaleMatrix = MakeScaleMatrix(scale);
-		Matrix4x4 rotateXYZMatrix = Multiply(
+		Matrix4x4 rotateXYZMatrix = MMMultiply(
 		    MakeRotateXMatrix(rotate.x),
-		    Multiply(MakeRotateYMatrix(rotate.y), MakeRotateZMatrix(rotate.z)));
+		    MMMultiply(MakeRotateYMatrix(rotate.y), MakeRotateZMatrix(rotate.z)));
 
-		result = Multiply(scaleMatrix, Multiply(rotateXYZMatrix, translateMatrix));
+		result = MMMultiply(scaleMatrix, MMMultiply(rotateXYZMatrix, translateMatrix));
 
 		/*result.m[0][0] = rotateXYZMatrix.m[0][0] * scaleMatrix.m[0][0];
 		result.m[0][1] = rotateXYZMatrix.m[0][1] * scaleMatrix.m[0][0];
@@ -225,6 +240,63 @@ public:
 
 		return result;
 	}
+
+	static Matrix4x4 MakePerspectiveFovMatrix(float fovY, float aspectRetio, float nearClip, float farClip) {
+		Matrix4x4 result{};
+
+		for (int i = 0; i < 4; i++) {
+			for (int j = 0; j < 4; j++) {
+				result.m[i][j] = 0;
+			}
+		}
+
+		result.m[0][0] = (1 / aspectRetio) * (1 / tan(fovY / 2));
+		result.m[1][1] = (1 / tan(fovY / 2));
+		result.m[2][2] = farClip / (farClip - nearClip);
+		result.m[2][3] = 1;
+		result.m[3][2] = (-nearClip * farClip) / (farClip - nearClip);
+
+		return result;
+	}
+	static Matrix4x4 MakeOrthographicMatrix(
+	    float left, float top, float right, float bottom, float nearClip, float farClip) {
+		Matrix4x4 result{};
+		for (int i = 0; i < 4; i++) {
+			for (int j = 0; j < 4; j++) {
+				result.m[i][j] = 0;
+			}
+		}
+
+		result.m[0][0] = 2 / (right - left);
+		result.m[1][1] = 2 / (top - bottom);
+		result.m[2][2] = 1 / (farClip - nearClip);
+		result.m[3][3] = 1;
+
+		result.m[3][0] = (left + right) / (left - right);
+		result.m[3][1] = (top + bottom) / (bottom - top);
+		result.m[3][2] = (nearClip) / (nearClip - farClip);
+
+		return result;
+	}
+	static Matrix4x4 MakeViewPortMatrix(
+	    float left, float top, float width, float height, float minDepth, float maxDepth) {
+		Matrix4x4 result{};
+		for (int i = 0; i < 4; i++) {
+			for (int j = 0; j < 4; j++) {
+				result.m[i][j] = 0;
+			}
+		}
+		result.m[0][0] = width / 2;
+		result.m[1][1] = -(height / 2);
+		result.m[2][2] = maxDepth - minDepth;
+		result.m[3][0] = left + (width / 2);
+		result.m[3][1] = top + (height / 2);
+		result.m[3][2] = minDepth;
+		result.m[3][3] = 1;
+
+		return result;
+	}
+
 
 	static float Length(const Vector3& v) {
 		float result{};

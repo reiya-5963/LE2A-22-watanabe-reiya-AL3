@@ -31,6 +31,7 @@ void GameScene::Initialize() {
 
 	// ファイル名を指定してテクスチャを読み込む
 	textureHandle_ = TextureManager::Load("sample.png");
+	textureReticle_ = TextureManager::Load("reticle.png");
 
 	// 3Dモデルの生成
 	model_ = Model::Create();
@@ -59,6 +60,7 @@ void GameScene::Initialize() {
 
 	skydome_ = new Skydome();
 
+	player_->SetTexReticle(textureReticle_);
 	// 自キャラの初期化
 	player_->Initialize(model_, textureHandle_);
 
@@ -88,7 +90,7 @@ void GameScene::Update() {
 	ImGui::End();
 
 	// 自キャラの更新
-	player_->Update();
+	player_->Update(viewProjection_);
 	UpdateEnemyPopCommands();
 	enemys_.remove_if([](Enemy* enemy) {
 		if (enemy->IsDead()) {
@@ -178,6 +180,11 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
+	/// 
+	
+	player_->DrawUI();
+
+
 
 	// スプライト描画後処理
 	Sprite::PostDraw();
