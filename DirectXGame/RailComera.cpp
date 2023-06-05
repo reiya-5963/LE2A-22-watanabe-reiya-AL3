@@ -3,7 +3,7 @@
 void RailCamera::Initialize(const Vector3& position, const Vector3& rotate) {
 	worldTransform_.translation_ = position;
 	worldTransform_.rotation_ = rotate;
-	worldTransform_.scale_ = {1.0f, 1.0f, 1.0f};
+	//worldTransform_.scale_ = {1.0f, 1.0f, 1.0f};
 	viewProjection_.Initialize();
 }
 
