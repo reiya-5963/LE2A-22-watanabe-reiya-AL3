@@ -1,15 +1,13 @@
 #include "Enemy.h"
 #include "Player.h"
+#include "GameScene.h"
 
 Enemy::~Enemy() {
 	delete state;
-	for (EnemyBullet* bullet : bullets_) {
-		delete bullet;
-	}
+	
 }
 
-void Enemy::Initialize(
-    Model* model, const Vector3& position) {
+void Enemy::Initialize(Model* model, const Vector3& position, GameScene* gamescene) {
 	assert(model);
 
 	model_ = model;
@@ -25,7 +23,7 @@ void Enemy::Initialize(
 	ApproachInit();
 	/*pApproachMove = &Enemy::ApproachMove;
 	phase_ = Phase::Approach;*/
-	
+	SetGameScene(gamescene);
 }
 
 void Enemy::Update() { 
@@ -39,19 +37,11 @@ void Enemy::Update() {
 		break;
 	}*/
 	//(this->*spMoveTable[static_cast<size_t>(phase_)])();
-	bullets_.remove_if([](EnemyBullet* bullet) {
-		if (bullet->IsDead()) {
-			delete bullet;
-			return true;
-		}
-		return false;
-	});
+	
 
 	state->Update();
 
-	for (EnemyBullet* bullet : bullets_) {
-		bullet->Update();
-	}
+	
 	worldTransform_.UpdateMatrix(); 
 }
 
@@ -59,9 +49,7 @@ void Enemy::Update() {
 void Enemy::Draw(ViewProjection& viewProjection) {
 	model_->Draw(worldTransform_, viewProjection, textureHandle_);
 
-	for (EnemyBullet* bullet : bullets_) {
-		bullet->Draw(viewProjection);
-	}
+	
 }
 
 //void (Enemy::*Enemy::spMoveTable[])() = {
@@ -96,8 +84,9 @@ void Enemy::Fire() {
 
 	EnemyBullet* newBullet = new EnemyBullet();
 	newBullet->Initialize(model_, worldTransform_.translation_, velocity);
-
-	bullets_.push_back(newBullet);
+	
+	gameScene_->AddEnemyBullet(newBullet);
+	//	bullets_.push_back(newBullet);
 }
 
 void Enemy::ApproachInit() {
@@ -119,7 +108,7 @@ Vector3 Enemy::GetWorldPosition() {
 }
 
 void Enemy::OnCollision() {
-
+	isDead_ = true; 
 }
 	////****EnemyState****////
 

@@ -6,6 +6,7 @@
 #include "EnemyBullet.h"
 #include <cassert>
 #include <list>
+class GameScene;
 class Enemy;
 
 
@@ -47,7 +48,7 @@ class Enemy {
 public:
 	~Enemy();
 
-	void Initialize(Model* model, const Vector3& position);
+	void Initialize(Model* model, const Vector3& position, GameScene* gamescene);
 	void Update();
 	void Draw(ViewProjection& viewProjection);
 
@@ -77,8 +78,12 @@ public:
 	Vector3 GetWorldPosition();
 
 	void OnCollision();
+	bool IsDead() const { return isDead_; }
 
-	const std::list<EnemyBullet*>& GetBullets() { return bullets_; }
+
+	void SetGameScene(GameScene* gameScene) { gameScene_ = gameScene; }
+
+	//const std::list<EnemyBullet*>& GetBullets() { return bullets_; }
 
 private:
 	WorldTransform worldTransform_;
@@ -88,10 +93,11 @@ private:
 	BaseEnemyState* state;
 
 	EnemyBullet* bullet_ = nullptr;
-
-	std::list<EnemyBullet*> bullets_;
+	GameScene* gameScene_ = nullptr;
 
 	Player* player_ = nullptr;
+	bool isDead_ = false;
+
 	/*Phase phase_;
 	void (Enemy::*pApproachMove)();
 	static void (Enemy::*spMoveTable[])();*/
