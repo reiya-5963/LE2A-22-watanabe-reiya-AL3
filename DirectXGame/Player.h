@@ -66,6 +66,8 @@ public:
 
 	void DrawUI();
 
+	void MouseUpdate(ViewProjection& viewProjection);
+
 private:
 	//ワールド変換データ
 	WorldTransform worldTransform_;
@@ -84,4 +86,7 @@ private:
 	WorldTransform worldTransform3DReticle_;
 	uint32_t texReticle_ = 0;
 	Sprite* sprite2DReticle_ = nullptr;
+
+	bool isControl_ = true;
+	bool isAttack = false;
 };

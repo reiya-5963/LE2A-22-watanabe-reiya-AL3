@@ -88,8 +88,19 @@ void GameScene::Update() {
 	ImGui::Begin("Debug");
 	ImGui::Text("isDebugCameraActive : %d", isDebugCameraActive_);
 	ImGui::End();
+	if (isDebugCameraActive_) {
+		debugCamera_->Update();
+		viewProjection_.matView = debugCamera_->GetViewProjection().matView;
+		viewProjection_.matProjection = debugCamera_->GetViewProjection().matProjection;
+		viewProjection_.TransferMatrix();
+	} else {
+		railCamera_->Update();
+		viewProjection_.matView = railCamera_->GetViewProjection().matView;
+		viewProjection_.matProjection = railCamera_->GetViewProjection().matProjection;
+		viewProjection_.TransferMatrix();
+	}
 
-	// 自キャラの更新
+			// 自キャラの更新
 	player_->Update(viewProjection_);
 	UpdateEnemyPopCommands();
 	enemys_.remove_if([](Enemy* enemy) {
@@ -116,18 +127,7 @@ void GameScene::Update() {
 	}
 	skydome_->Update();
 
-	if (isDebugCameraActive_) {
-		debugCamera_->Update();
-		viewProjection_.matView = debugCamera_->GetViewProjection().matView;
-		viewProjection_.matProjection = debugCamera_->GetViewProjection().matProjection;
-		viewProjection_.TransferMatrix();
-	} else {
-		railCamera_->Update();
-		viewProjection_.matView = railCamera_->GetViewProjection().matView;
-		viewProjection_.matProjection = railCamera_->GetViewProjection().matProjection;
-		viewProjection_.TransferMatrix();
-		// viewProjection_.UpdateMatrix();
-	}
+
 
 	CheckAllCollisions();
 }
