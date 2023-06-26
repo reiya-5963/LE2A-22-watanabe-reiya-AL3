@@ -18,6 +18,8 @@ GameScene::~GameScene() {
 	delete skydome_;
 	delete railCamera_;
 
+	delete modelSkydome_;
+
 	for (EnemyBullet* bullet : enemyBullets_) {
 		delete bullet;
 	}
