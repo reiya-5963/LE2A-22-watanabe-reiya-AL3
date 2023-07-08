@@ -12,7 +12,7 @@
 
 #include <memory>
 #include "Player.h"
-
+#include "skydome.h"
 
 /// <summary>
 /// ゲームシーン
@@ -54,16 +54,23 @@ private: // メンバ変数
 	/// ゲームシーン用
 	/// </summary>
 	
-	// テクスチャハンドル
-	uint32_t textureHandle_ = 0u;
-	// モデル
-	std::unique_ptr<Model> model_ = nullptr;
+
 	// ビュープロジェクション
 	ViewProjection viewProjection_;
 
 
+
+	// テクスチャハンドル
+	uint32_t textureHandle_ = 0u;
+	// モデル
+	std::unique_ptr<Model> model_ = nullptr;
 	// プレイヤー
 	std::unique_ptr<Player> player_ = nullptr;
 
-
+	// テクスチャハンドル
+	uint32_t skydomeTHandle_ = 0u;
+	// モデル
+	std::unique_ptr<Model> skydomeModel_ = nullptr;
+	// 天球
+	std::unique_ptr<Skydome> skydome_= nullptr;
 };

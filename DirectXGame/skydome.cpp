@@ -1,4 +1,5 @@
 #include "Skydome.h"
+#include "MyMath.h"
 
 /// <summary>
 /// 
@@ -17,7 +18,10 @@ void Skydome::Initialize(Model* model, const Vector3& position) {
 /// 
 /// </summary>
 void Skydome::Update() {
-	
+	worldTransform_.matWorld_ = MyMath::MakeAffineMatrix(
+	    worldTransform_.scale_, worldTransform_.rotation_, worldTransform_.translation_);
+
+	worldTransform_.TransferMatrix();
 	//worldTransform_.UpdateMatrix();
 
 }
