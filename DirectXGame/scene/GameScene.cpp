@@ -26,11 +26,8 @@ void GameScene::Initialize() {
 
 	debugCamera_ = std::make_unique<DebugCamera>(WinApp::kWindowWidth, WinApp::kWindowHeight);
 
-	// テクスチャの読み込み
-	textureHandle_ = TextureManager::Load("sample.png");
-
 	// モデルの生成
-	model_.reset(Model::Create());
+	model_.reset(Model::CreateFromOBJ("TestPlayer", true));
 	skydomeModel_.reset(Model::CreateFromOBJ("skydome", true));
 	groundModel_.reset(Model::CreateFromOBJ("Ground", true));
 
@@ -51,7 +48,7 @@ void GameScene::Initialize() {
 	// プレイヤーの生成
 	player_ = std::make_unique<Player>();
 	// プレイヤーの初期化
-	player_->Initialize(model_.get(), textureHandle_);
+	player_->Initialize(model_.get());
 }
 
 void GameScene::Update() {

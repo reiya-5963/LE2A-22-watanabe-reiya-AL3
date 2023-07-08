@@ -67,22 +67,16 @@ private: // メンバ変数
 
 
 
-	// テクスチャハンドル
-	uint32_t textureHandle_ = 0u;
 	// モデル
 	std::unique_ptr<Model> model_ = nullptr;
 	// プレイヤー
 	std::unique_ptr<Player> player_ = nullptr;
 
-	// テクスチャハンドル
-	uint32_t skydomeTHandle_ = 0u;
 	// モデル
 	std::unique_ptr<Model> skydomeModel_ = nullptr;
 	// 天球
 	std::unique_ptr<Skydome> skydome_= nullptr;
 
-	// テクスチャハンドル
-	uint32_t groundTHandle_ = 0u;
 	// モデル
 	std::unique_ptr<Model> groundModel_ = nullptr;
 	// 地面
