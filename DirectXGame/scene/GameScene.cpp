@@ -2,6 +2,8 @@
 #include "TextureManager.h"
 #include <cassert>
 
+#include "AxisIndicator.h"
+
 GameScene::GameScene() {}
 
 GameScene::~GameScene() {
@@ -30,6 +32,7 @@ void GameScene::Initialize() {
 	// モデルの生成
 	model_.reset(Model::Create());
 	skydomeModel_.reset(Model::CreateFromOBJ("skydome", true));
+	groundModel_.reset(Model::CreateFromOBJ("Ground", true));
 
 	// ビュープロジェクションの初期化
 	viewProjection_.Initialize();
@@ -38,6 +41,12 @@ void GameScene::Initialize() {
 	skydome_ = std::make_unique<Skydome>();
 	// 天球の初期化
 	skydome_->Initialize(skydomeModel_.get(), {0, 0, 0});
+
+	// 地面の生成
+	ground_ = std::make_unique<Ground>();
+	// 地面の初期化
+	ground_->Initialize(groundModel_.get(), {0, 0, 0});
+
 
 	// プレイヤーの生成
 	player_ = std::make_unique<Player>();
@@ -48,7 +57,6 @@ void GameScene::Initialize() {
 void GameScene::Update() {
 
 #ifdef _DEBUG
-
 	if (input_->TriggerKey(DIK_SPACE)) {
 		if (!isDebugCameraActive_) {
 			isDebugCameraActive_ = true;
@@ -57,18 +65,30 @@ void GameScene::Update() {
 			isDebugCameraActive_ = false;
 		}
 	}
-
+	
+	// 軸方向表示の表示を有効にする
+	AxisIndicator::GetInstance()->SetVisible(true);
+	// 軸方向表示が参照するビュープロジェクションを指定する(アドレス渡し)
+	AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection_);
 #endif
 	if (isDebugCameraActive_) {
 		debugCamera_->Update();
-		//viewProjection_.matView = 
-
+		viewProjection_.matView = debugCamera_->GetViewProjection().matView;
+		viewProjection_.matProjection = debugCamera_->GetViewProjection().matProjection;
+		viewProjection_.TransferMatrix();
+	}
+	else {
+		viewProjection_.UpdateMatrix();
 	}
 
 
 
 	// 天球の更新
 	skydome_->Update();
+
+	// 地面の更新
+	ground_->Update();
+
 
 	// プレイヤーの更新
 	player_->Update();
@@ -103,6 +123,11 @@ void GameScene::Draw() {
 
 	// 天球の描画
 	skydome_->Draw(viewProjection_);
+
+	// 地面の描画
+	ground_->Draw(viewProjection_);
+
+
 
 	// プレイヤーの描画
 	player_->Draw(viewProjection_);
