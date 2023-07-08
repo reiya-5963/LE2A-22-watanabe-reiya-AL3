@@ -11,6 +11,7 @@
 
 
 #include <memory>
+#include "DebugCamera.h"
 #include "Player.h"
 #include "skydome.h"
 
@@ -54,6 +55,11 @@ private: // メンバ変数
 	/// ゲームシーン用
 	/// </summary>
 	
+	// デバッグカメラ有効
+	bool isDebugCameraActive_ = false;
+	// デバッグカメラ
+	std::unique_ptr<DebugCamera> debugCamera_ = nullptr;
+
 
 	// ビュープロジェクション
 	ViewProjection viewProjection_;

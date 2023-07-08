@@ -2,19 +2,16 @@
 #include "TextureManager.h"
 #include <cassert>
 
-
-
 GameScene::GameScene() {}
 
 GameScene::~GameScene() {
 	//
 	//
 	//// モデルの開放
-	//delete model_;
+	// delete model_;
 
 	//// プレイヤーの開放
-	//delete player_;
-
+	// delete player_;
 }
 
 void GameScene::Initialize() {
@@ -24,16 +21,15 @@ void GameScene::Initialize() {
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
 #pragma endregion
-	
+
+	debugCamera_ = std::make_unique<DebugCamera>(WinApp::kWindowWidth, WinApp::kWindowHeight);
+
 	// テクスチャの読み込み
 	textureHandle_ = TextureManager::Load("sample.png");
-	
 
-	
 	// モデルの生成
 	model_.reset(Model::Create());
 	skydomeModel_.reset(Model::CreateFromOBJ("skydome", true));
-
 
 	// ビュープロジェクションの初期化
 	viewProjection_.Initialize();
@@ -43,22 +39,39 @@ void GameScene::Initialize() {
 	// 天球の初期化
 	skydome_->Initialize(skydomeModel_.get(), {0, 0, 0});
 
-
 	// プレイヤーの生成
 	player_ = std::make_unique<Player>();
 	// プレイヤーの初期化
 	player_->Initialize(model_.get(), textureHandle_);
-
 }
 
-void GameScene::Update() { 
+void GameScene::Update() {
+
+#ifdef _DEBUG
+
+	if (input_->TriggerKey(DIK_SPACE)) {
+		if (!isDebugCameraActive_) {
+			isDebugCameraActive_ = true;
+		}
+		else if (isDebugCameraActive_) {
+			isDebugCameraActive_ = false;
+		}
+	}
+
+#endif
+	if (isDebugCameraActive_) {
+		debugCamera_->Update();
+		//viewProjection_.matView = 
+
+	}
+
+
 
 	// 天球の更新
 	skydome_->Update();
 
-	// プレイヤーの更新	
-	player_->Update(); 
-
+	// プレイヤーの更新
+	player_->Update();
 }
 
 void GameScene::Draw() {
@@ -93,7 +106,6 @@ void GameScene::Draw() {
 
 	// プレイヤーの描画
 	player_->Draw(viewProjection_);
-
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
