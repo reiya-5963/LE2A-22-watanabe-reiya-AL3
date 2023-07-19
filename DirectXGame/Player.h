@@ -1,7 +1,7 @@
 #pragma once
 #include "Model.h"
 #include "WorldTransform.h"
-
+#include "input/Input.h"
 
 /// <summary>
 /// プレイヤー
