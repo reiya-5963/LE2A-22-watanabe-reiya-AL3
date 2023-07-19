@@ -29,13 +29,10 @@ void Player::Update() {
 		// 移動量
 		Vector3 move = {(float)joyState.Gamepad.sThumbRX, 0.0f, (float)joyState.Gamepad.sThumbRY};
 		// 
-		move = MyMath::Normalize(move);
-		move.x* speed;
-		move.y* speed;
-		move.z* speed;
+		move = MyMath::Normalize(move) * speed;
 
 		// 
-		worldTransform_.translation_ += ;
+		worldTransform_.translation_ += move;
 
 
 
