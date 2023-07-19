@@ -21,24 +21,29 @@ void Player::Initialize(Model* model) {
 /// 更新
 /// </summary>
 void Player::Update() { 
+	Matrix4x4 movetrans = MyMath::MakeTranslateMatrix(worldTransform_.translation_);
+	Vector3 move = {0, 0, 0};
 	XINPUT_STATE joyState;
 	if (Input::GetInstance()->GetJoystickState(0, joyState)) {
 		// 速さ
 		const float speed = 0.3f;
 
 		// 移動量
-		Vector3 move = {
+		move = {
 			(float)joyState.Gamepad.sThumbLX,
 			0.0f, 
 			(float)joyState.Gamepad.sThumbLY};
 		// 
-		move = MyMath::Normalize(move) * speed;
+		move = MyMath::Normalize(move);
+		move.x *= speed;
+		move.y *= speed;
+		move.z *= speed;
 
-		Matrix4x4 movetrans = MyMath::MakeTranslateMatrix(worldTransform_.translation_);
-		worldTransform_.translation_ = MyMath::TransformCoord(move, movetrans);
+
 	}
 	
-	
+	worldTransform_.translation_ = MyMath::TransformCoord(move, movetrans);
+
 	// 行列を定数バッファに転送
 	worldTransform_.UpdateMatrix();
 }
