@@ -27,20 +27,20 @@ void Player::Update() {
 		const float speed = 0.3f;
 
 		// 移動量
-		Vector3 move = {(float)joyState.Gamepad.sThumbRX, 0.0f, (float)joyState.Gamepad.sThumbRY};
+		Vector3 move = {
+			(float)joyState.Gamepad.sThumbLX,
+			0.0f, 
+			(float)joyState.Gamepad.sThumbLY};
 		// 
 		move = MyMath::Normalize(move) * speed;
 
-		// 
-		worldTransform_.translation_ += move;
-
-
-
+		Matrix4x4 movetrans = MyMath::MakeTranslateMatrix(worldTransform_.translation_);
+		worldTransform_.translation_ = MyMath::TransformCoord(move, movetrans);
 	}
 	
 	
 	// 行列を定数バッファに転送
-	worldTransform_.TransferMatrix();
+	worldTransform_.UpdateMatrix();
 }
 
 /// <summary>
