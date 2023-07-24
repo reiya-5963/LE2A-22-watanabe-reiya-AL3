@@ -36,6 +36,7 @@ void Player::Update() {
 	Matrix4x4 movetrans = MyMath::MakeTranslateMatrix(worldTransform_.translation_);
 	Vector3 move = {0, 0, 0};
 	XINPUT_STATE joyState;
+	// もしコントローラーでのプレイなら
 	if (Input::GetInstance()->GetJoystickState(0, joyState)) {
 		// 速さ
 		const float speed = 0.3f;
@@ -67,6 +68,7 @@ void Player::Update() {
 
 
 	} 
+	// そうでないならキーマウ
 	else {
 	
 			// 速さ

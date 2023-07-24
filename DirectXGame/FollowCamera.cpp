@@ -11,13 +11,16 @@ void FollowCamera::Initialize() {
 void FollowCamera::Update() {
 	
 	XINPUT_STATE joyState;
+	// もしコントローラーでのプレイなら
 	if (Input::GetInstance()->GetJoystickState(0, joyState)) {
 		//
 		float speed = 0.2f;
 
 		viewProjection_.rotation_.y += (float)joyState.Gamepad.sThumbRX / SHRT_MAX * speed;
 
-	} else {
+	}
+	// そうでないならキーマウ
+	else {
 		GetCursorPos(&mousePos_);
 
 		HWND hwnd = WinApp::GetInstance()->GetHwnd();
