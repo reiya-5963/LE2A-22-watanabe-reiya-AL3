@@ -76,6 +76,15 @@ public:
 	/// <returns></returns>
 	static Vector3 TransformCoord(Vector3 vector, Matrix4x4 matrix);
 
+
+	/// <summary>
+	/// 座標変換
+	/// </summary>
+	/// <param name="vector">ベクトル</param>
+	/// <param name="matrix">行列</param>
+	/// <returns></returns>
+	static Vector3 TransformNormal(Vector3 vector, Matrix4x4 matrix);
+
 	/// <summary>
 	/// 正射影ベクトル
 	/// </summary>

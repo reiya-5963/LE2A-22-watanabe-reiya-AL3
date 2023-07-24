@@ -24,6 +24,7 @@ void GameScene::Initialize() {
 	audio_ = Audio::GetInstance();
 #pragma endregion
 
+	// デバッグカメラの生成
 	debugCamera_ = std::make_unique<DebugCamera>(WinApp::kWindowWidth, WinApp::kWindowHeight);
 
 	// モデルの生成
@@ -44,11 +45,17 @@ void GameScene::Initialize() {
 	// 地面の初期化
 	ground_->Initialize(groundModel_.get(), {0, 0, 0});
 
-
 	// プレイヤーの生成
 	player_ = std::make_unique<Player>();
 	// プレイヤーの初期化
 	player_->Initialize(model_.get());
+
+	// 追従カメラの生成
+	followCamera_ = std::make_unique<FollowCamera>();
+	// 追従カメラの初期化
+	followCamera_->Initialize();
+	// 自キャラのワールドトランスフォームを追従カメラにセット
+	followCamera_->SetTarget(&player_->GetWorldTransform());
 }
 
 void GameScene::Update() {
@@ -68,6 +75,20 @@ void GameScene::Update() {
 	// 軸方向表示が参照するビュープロジェクションを指定する(アドレス渡し)
 	AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection_);
 #endif
+	// 天球の更新
+	skydome_->Update();
+
+	// 地面の更新
+	ground_->Update();
+
+	// 追従カメラの更新
+	followCamera_->Update();
+	viewProjection_.matView = followCamera_->GetViewProjection().matView;
+	viewProjection_.matProjection = followCamera_->GetViewProjection().matProjection;
+
+	// プレイヤーの更新
+	player_->Update();
+
 	if (isDebugCameraActive_) {
 		debugCamera_->Update();
 		viewProjection_.matView = debugCamera_->GetViewProjection().matView;
@@ -75,20 +96,13 @@ void GameScene::Update() {
 		viewProjection_.TransferMatrix();
 	}
 	else {
-		viewProjection_.UpdateMatrix();
+		viewProjection_.TransferMatrix();
+		//viewProjection_.UpdateMatrix();
 	}
 
 
 
-	// 天球の更新
-	skydome_->Update();
-
-	// 地面の更新
-	ground_->Update();
-
-
-	// プレイヤーの更新
-	player_->Update();
+	
 }
 
 void GameScene::Draw() {

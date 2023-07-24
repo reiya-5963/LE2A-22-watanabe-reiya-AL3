@@ -13,6 +13,9 @@ void Player::Initialize(Model* model) {
 	
 	model_ = model;
 
+	input_ = Input::GetInstance();
+
+
 	worldTransform_.Initialize();
 
 }
@@ -40,6 +43,31 @@ void Player::Update() {
 		move.z *= speed;
 
 
+	} else {
+	
+			// 速さ
+		const float speed = 0.3f;
+
+		if (input_->PushKey(DIK_W)) {
+			move.z = 1.0f;
+		}
+		if (input_->PushKey(DIK_S)) {
+			move.z = -1.0f;
+		}
+		if (input_->PushKey(DIK_A)) {
+			move.x = -1.0f;
+		}
+		if (input_->PushKey(DIK_D)) {
+			move.x = 1.0f;
+		}
+
+		
+		move = MyMath::Normalize(move);
+		move.x *= speed;
+		move.y *= speed;
+		move.z *= speed;
+
+
 	}
 	
 	worldTransform_.translation_ = MyMath::TransformCoord(move, movetrans);
@@ -56,3 +84,5 @@ void Player::Draw(ViewProjection& viewProjection) {
 	// モデルの描画
 	model_->Draw(worldTransform_, viewProjection);
 }
+
+WorldTransform& Player::GetWorldTransform() { return worldTransform_; }

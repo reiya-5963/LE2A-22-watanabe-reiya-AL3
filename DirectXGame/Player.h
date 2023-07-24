@@ -26,11 +26,19 @@ public: // メンバ関数
 	/// <param name="viewProjection">ビュープロジェクション</param>
 	void Draw(ViewProjection& viewProjection);
 
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <returns></returns>
+	WorldTransform& GetWorldTransform();
+
 private: // メンバ変数
 
 	// ワールド変換データ
 	WorldTransform worldTransform_;
 	// モデル
 	Model* model_ = nullptr;
+	// キーボード入力
+	Input* input_ = nullptr;
 
 };
