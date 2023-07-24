@@ -18,12 +18,21 @@ void Player::Initialize(Model* model) {
 
 	worldTransform_.Initialize();
 
+		
+			worldTransform_.rotation_.y =
+	    std::atan2(worldTransform_.rotation_.x, worldTransform_.rotation_.z);
+
+
+
+
 }
 
 /// <summary>
 /// 更新
 /// </summary>
 void Player::Update() { 
+	      
+
 	Matrix4x4 movetrans = MyMath::MakeTranslateMatrix(worldTransform_.translation_);
 	Vector3 move = {0, 0, 0};
 	XINPUT_STATE joyState;
@@ -37,17 +46,28 @@ void Player::Update() {
 			0.0f, 
 			(float)joyState.Gamepad.sThumbLY};
 		// 
-		move = MyMath::Normalize(move);
+			move = MyMath::Normalize(move);
 		move.x *= speed;
 		move.y *= speed;
 		move.z *= speed;
 
-		move.x += viewProjection_->rotation_.x;
-		move.y += viewProjection_->rotation_.y;
-		move.z += viewProjection_->rotation_.z;
+		Matrix4x4 moveMat = MyMath::MakeTranslateMatrix(move);
+		Matrix4x4 rotateMat = MyMath::Multiply(
+		    MyMath::Multiply(
+		        MyMath::MakeRotateXMatrix(viewProjection_->rotation_.x),
+		        MyMath::MakeRotateYMatrix(viewProjection_->rotation_.y)),
+		    MyMath::MakeRotateZMatrix(viewProjection_->rotation_.z));
+
+		moveMat = MyMath::Multiply(moveMat, rotateMat);
+		move.x = moveMat.m[3][0];
+		move.y = moveMat.m[3][1];
+		move.z = moveMat.m[3][2];
+
+		worldTransform_.rotation_.y = std::atan2(move.x, move.z);
 
 
-	} else {
+	} 
+	else {
 	
 			// 速さ
 		const float speed = 0.3f;
@@ -83,13 +103,15 @@ void Player::Update() {
 		move.y = moveMat.m[3][1];
 		move.z = moveMat.m[3][2];
 
+		worldTransform_.rotation_.y = std::atan2(move.x, move.z);
 
 	}
-	
+
 	worldTransform_.translation_ = MyMath::TransformCoord(move, movetrans);
 
 	// 行列を定数バッファに転送
 	worldTransform_.UpdateMatrix();
+
 }
 
 /// <summary>

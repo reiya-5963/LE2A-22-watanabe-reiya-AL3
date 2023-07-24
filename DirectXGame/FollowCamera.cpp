@@ -9,32 +9,15 @@ void FollowCamera::Initialize() {
 }
 
 void FollowCamera::Update() {
-	// もし追従対象がいれば
-	if (target_) {
-		// 追従対象からカメラまでのオフセット
-		Vector3 offset = {0.0f, 4.0f, -20.0f};
-
-		Matrix4x4 rotateMat = MyMath::Multiply(
-		    MyMath::Multiply(
-		        MyMath::MakeRotateXMatrix(viewProjection_.rotation_.x),
-		        MyMath::MakeRotateYMatrix(viewProjection_.rotation_.y)),
-		    MyMath::MakeRotateZMatrix(viewProjection_.rotation_.z));
-
-		offset = MyMath::TransformNormal(offset, rotateMat);
-
-		// 座標をコピーしてオフセット分ずらす
-		viewProjection_.translation_ = MyMath::Add(target_->translation_, offset);
-	}
-
+	
 	XINPUT_STATE joyState;
-	if (Input::GetInstance()->GetJoystickState(1, joyState)) {
-		// 
+	if (Input::GetInstance()->GetJoystickState(0, joyState)) {
+		//
 		float speed = 0.2f;
 
-		viewProjection_.rotation_.y += (float)joyState.Gamepad.sThumbRX * speed;
-	
-	}
-	else {
+		viewProjection_.rotation_.y += (float)joyState.Gamepad.sThumbRX / SHRT_MAX * speed;
+
+	} else {
 		GetCursorPos(&mousePos_);
 
 		HWND hwnd = WinApp::GetInstance()->GetHwnd();
@@ -46,7 +29,24 @@ void FollowCamera::Update() {
 
 		viewProjection_.rotation_.y += mouseDistance * speed;
 		preMousePos_ = mousePos_;
+	}
 
+
+	// もし追従対象がいれば
+	if (target_) {
+		// 追従対象からカメラまでのオフセット
+		Vector3 offset = {0.0f, 4.0f, -10.0f};
+
+		Matrix4x4 rotateMat = MyMath::Multiply(
+		    MyMath::Multiply(
+		        MyMath::MakeRotateXMatrix(viewProjection_.rotation_.x),
+		        MyMath::MakeRotateYMatrix(viewProjection_.rotation_.y)),
+		    MyMath::MakeRotateZMatrix(viewProjection_.rotation_.z));
+
+		offset = MyMath::TransformNormal(offset, rotateMat);
+
+		// 座標をコピーしてオフセット分ずらす
+		viewProjection_.translation_ = MyMath::Add(target_->translation_, offset);
 	}
 
 	// ビュー行列の更新と転送
