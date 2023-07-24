@@ -32,6 +32,8 @@ public: // メンバ関数
 	/// <returns></returns>
 	WorldTransform& GetWorldTransform();
 
+	void SetViewProjection(const ViewProjection* viewProjection);
+
 private: // メンバ変数
 
 	// ワールド変換データ
@@ -40,5 +42,7 @@ private: // メンバ変数
 	Model* model_ = nullptr;
 	// キーボード入力
 	Input* input_ = nullptr;
+
+	const ViewProjection* viewProjection_ = nullptr;
 
 };

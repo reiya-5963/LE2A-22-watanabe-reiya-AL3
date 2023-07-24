@@ -29,7 +29,7 @@ public:
 	/// ビュープロジェクションの取得
 	/// </summary>
 	/// <returns>ビュープロジェクション</returns>
-	ViewProjection GetViewProjection();
+	ViewProjection& GetViewProjection();
 
 private:
 	// ビュープロジェクション

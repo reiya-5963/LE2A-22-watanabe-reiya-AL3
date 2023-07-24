@@ -42,6 +42,10 @@ void Player::Update() {
 		move.y *= speed;
 		move.z *= speed;
 
+		move.x += viewProjection_->rotation_.x;
+		move.y += viewProjection_->rotation_.y;
+		move.z += viewProjection_->rotation_.z;
+
 
 	} else {
 	
@@ -67,6 +71,18 @@ void Player::Update() {
 		move.y *= speed;
 		move.z *= speed;
 
+		Matrix4x4 moveMat = MyMath::MakeTranslateMatrix(move);
+		Matrix4x4 rotateMat = MyMath::Multiply(
+		    MyMath::Multiply(
+				MyMath::MakeRotateXMatrix(viewProjection_->rotation_.x),
+		        MyMath::MakeRotateYMatrix(viewProjection_->rotation_.y)),
+				MyMath::MakeRotateZMatrix(viewProjection_->rotation_.z));
+
+		moveMat = MyMath::Multiply(moveMat, rotateMat);
+		move.x = moveMat.m[3][0];
+		move.y = moveMat.m[3][1];
+		move.z = moveMat.m[3][2];
+
 
 	}
 	
@@ -86,3 +102,7 @@ void Player::Draw(ViewProjection& viewProjection) {
 }
 
 WorldTransform& Player::GetWorldTransform() { return worldTransform_; }
+
+void Player::SetViewProjection(const ViewProjection* viewProjection) {
+	viewProjection_ = viewProjection;
+}

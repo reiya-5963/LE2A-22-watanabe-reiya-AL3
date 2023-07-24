@@ -61,6 +61,6 @@ void FollowCamera::SetTarget(const WorldTransform* target) {
 	target_ = target;
 }
 
-ViewProjection FollowCamera::GetViewProjection() {
+ViewProjection& FollowCamera::GetViewProjection() {
 	return viewProjection_;
 }
