@@ -28,7 +28,7 @@ void GameScene::Initialize() {
 	debugCamera_ = std::make_unique<DebugCamera>(WinApp::kWindowWidth, WinApp::kWindowHeight);
 
 	// モデルの生成
-	model_.reset(Model::CreateFromOBJ("TestPlayer", true));
+	model_.reset(Model::CreateFromOBJ("TestPlayerver", true));
 	skydomeModel_.reset(Model::CreateFromOBJ("skydome", true));
 	groundModel_.reset(Model::CreateFromOBJ("Ground", true));
 
