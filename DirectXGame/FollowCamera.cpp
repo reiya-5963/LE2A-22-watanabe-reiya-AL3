@@ -38,7 +38,7 @@ void FollowCamera::Update() {
 	// もし追従対象がいれば
 	if (target_) {
 		// 追従対象からカメラまでのオフセット
-		Vector3 offset = {0.0f, 4.0f, -10.0f};
+		Vector3 offset = {0.0f, 5.0f, -30.0f};
 
 		Matrix4x4 rotateMat = MyMath::Multiply(
 		    MyMath::Multiply(

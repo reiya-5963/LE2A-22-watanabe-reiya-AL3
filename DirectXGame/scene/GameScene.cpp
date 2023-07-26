@@ -28,7 +28,12 @@ void GameScene::Initialize() {
 	debugCamera_ = std::make_unique<DebugCamera>(WinApp::kWindowWidth, WinApp::kWindowHeight);
 
 	// モデルの生成
-	model_.reset(Model::CreateFromOBJ("TestPlayer", true));
+	model_body.reset(Model::CreateFromOBJ("TestPlayerver_body", true));
+	model_head.reset(Model::CreateFromOBJ("TestPlayerver_head", true));
+	model_l_arm.reset(Model::CreateFromOBJ("TestPlayerver_l_arm", true));
+	model_r_arm.reset(Model::CreateFromOBJ("TestPlayerver_r_arm", true));
+
+
 	skydomeModel_.reset(Model::CreateFromOBJ("skydome", true));
 	groundModel_.reset(Model::CreateFromOBJ("Ground", true));
 
@@ -48,7 +53,7 @@ void GameScene::Initialize() {
 	// プレイヤーの生成
 	player_ = std::make_unique<Player>();
 	// プレイヤーの初期化
-	player_->Initialize(model_.get());
+	player_->Initialize(model_body.get(), model_head.get(), model_l_arm.get(), model_r_arm.get());
 
 	// 追従カメラの生成
 	followCamera_ = std::make_unique<FollowCamera>();

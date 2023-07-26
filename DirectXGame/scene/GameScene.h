@@ -69,7 +69,15 @@ private: // メンバ変数
 
 
 	// モデル
-	std::unique_ptr<Model> model_ = nullptr;
+	std::unique_ptr<Model> model_body = nullptr;
+	// モデル
+	std::unique_ptr<Model> model_head = nullptr;
+	// モデル
+	std::unique_ptr<Model> model_l_arm = nullptr;
+	// モデル
+	std::unique_ptr<Model> model_r_arm = nullptr;
+
+
 	// プレイヤー
 	std::unique_ptr<Player> player_ = nullptr;
 
