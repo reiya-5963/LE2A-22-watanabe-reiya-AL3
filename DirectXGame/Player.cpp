@@ -8,25 +8,24 @@
 /// </summary>
 /// <param name="model">モデル</param>
 /// <param name="textureHandle">テクスチャハンドル</param>
-void Player::Initialize(
-    Model* model_body, Model* model_head, Model* model_l_arm, Model* model_r_arm) {
+void Player::Initialize(const std::vector<Model*>& models) {
 	// NULLチェック
-	assert(model_body && model_head && model_l_arm && model_r_arm);
+	assert(models[ModelIndexR_Arm]);
 
-	model_body_ = model_body;
-	model_head_ = model_head;
-	model_l_arm_ = model_l_arm;
-	model_r_arm_ = model_r_arm;
-
+	// インプット系の初期化
 	input_ = Input::GetInstance();
 
-	worldTransform_.Initialize();
+	// ベース部分の初期化
+	BaseCharacter::Initialize(models);
+
+	// 各部位のワールドトランスフォーム初期化
 	worldTransform_body_.Initialize();
 	worldTransform_head_.Initialize();
 	worldTransform_l_arm_.Initialize();
 	worldTransform_r_arm_.Initialize();
 
-	worldTransform_body_.parent_ = &worldTransform_;
+	// 各部位の位置初期化 //
+	worldTransform_body_.parent_ = &worldTrans_;
 	worldTransform_head_.parent_ = &worldTransform_body_;
 	worldTransform_head_.translation_.y += 4.3f;
 
@@ -37,18 +36,19 @@ void Player::Initialize(
 	worldTransform_r_arm_.parent_ = &worldTransform_body_;
 	worldTransform_r_arm_.translation_.y += 4.0f;
 	worldTransform_r_arm_.translation_.x += 1.0f;
+	//****************//
 
+	// 各ギミックの初期化
 	InitializeFloatingGimmick();
 	InitializeArmGimmick();
-	worldTransform_.rotation_.y =
-	    std::atan2(worldTransform_.rotation_.x, worldTransform_.rotation_.z);
+	worldTrans_.rotation_.y = std::atan2(worldTrans_.rotation_.x, worldTrans_.rotation_.z);
 }
 
 /// <summary>
 /// 更新
 /// </summary>
 void Player::Update() {
-	Matrix4x4 movetrans = MyMath::MakeTranslateMatrix(worldTransform_.translation_);
+	Matrix4x4 movetrans = MyMath::MakeTranslateMatrix(worldTrans_.translation_);
 	Vector3 move = {0, 0, 0};
 	XINPUT_STATE joyState;
 	// もしコントローラーでのプレイなら
@@ -76,7 +76,7 @@ void Player::Update() {
 		move.y = moveMat.m[3][1];
 		move.z = moveMat.m[3][2];
 
-		worldTransform_.rotation_.y = std::atan2(move.x, move.z);
+		worldTrans_.rotation_.y = std::atan2(move.x, move.z);
 
 	}
 	// そうでないならキーマウ
@@ -115,10 +115,13 @@ void Player::Update() {
 		move.y = moveMat.m[3][1];
 		move.z = moveMat.m[3][2];
 
-		worldTransform_.rotation_.y = std::atan2(move.x, move.z);
+		worldTrans_.rotation_.y = std::atan2(move.x, move.z);
 	}
 
-	worldTransform_.translation_ = MyMath::TransformCoord(move, movetrans);
+	// 位置の移動
+	worldTrans_.translation_ = MyMath::TransformCoord(move, movetrans);
+	
+	// 各ギミックの更新処理
 	UpdateFloatingGimmick();
 	UpdateArmGimmick();
 
@@ -127,17 +130,16 @@ void Player::Update() {
 	ImGui::SliderFloat3("head", &worldTransform_head_.translation_.x, 0.0f, 50.0f);
 	ImGui::SliderFloat3("l_arm", &worldTransform_l_arm_.translation_.x, 0.0f, -50.0f);
 	ImGui::SliderFloat3("r_arm", &worldTransform_r_arm_.translation_.x, 0.0f, 50.0f);
-
 	ImGui::SliderFloat("period", &floatingPeriod_, 0.0f, 500.0f);
 	ImGui::SliderFloat("amplitude", &floatingAmplitude, 0.0f, 500.0f);
 	ImGui::SliderFloat("armperiod", &armPeriod_, 0.0f, 500.0f);
 	ImGui::SliderFloat("armamplitude", &armAmplitude, 0.0f, 500.0f);
-
 	ImGui::End();
 
+	// ベース部分の更新処理
+	BaseCharacter::Update();
 
-	// 行列を定数バッファに転送
-	worldTransform_.UpdateMatrix();
+	// 各部位のワールドトランスフォームの更新処理
 	worldTransform_body_.UpdateMatrix();
 	worldTransform_head_.UpdateMatrix();
 	worldTransform_l_arm_.UpdateMatrix();
@@ -149,15 +151,13 @@ void Player::Update() {
 /// 描画
 /// </summary>
 /// <param name="viewProjection">ビュープロジェクション</param>
-void Player::Draw(ViewProjection& viewProjection) {
+void Player::Draw(const ViewProjection& viewProjection) {
 	// モデルの描画
-	model_body_->Draw(worldTransform_body_, viewProjection);
-	model_head_->Draw(worldTransform_head_, viewProjection);
-	model_l_arm_->Draw(worldTransform_l_arm_, viewProjection);
-	model_r_arm_->Draw(worldTransform_r_arm_, viewProjection);
+	models_[ModelIndexBody]->Draw(worldTransform_body_, viewProjection);
+	models_[ModelIndexHead]->Draw(worldTransform_head_, viewProjection);
+	models_[ModelIndexL_Arm]->Draw(worldTransform_l_arm_, viewProjection);
+	models_[ModelIndexR_Arm]->Draw(worldTransform_r_arm_, viewProjection);
 }
-
-WorldTransform& Player::GetWorldTransform() { return worldTransform_; }
 
 void Player::SetViewProjection(const ViewProjection* viewProjection) {
 	viewProjection_ = viewProjection;

@@ -164,10 +164,6 @@ Matrix4x4 MyMath::MakeTranslateMatrix(const Vector3 translate) {
 		}
 	}
 
-	/*for (int i = 0; i < 4; i++) {
-		result.m[i][i] = 1;
-	}*/
-
 	result.m[0][0] = 1;
 	result.m[1][1] = 1;
 	result.m[2][2] = 1;

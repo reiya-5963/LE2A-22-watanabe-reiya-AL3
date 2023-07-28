@@ -28,10 +28,14 @@ void GameScene::Initialize() {
 	debugCamera_ = std::make_unique<DebugCamera>(WinApp::kWindowWidth, WinApp::kWindowHeight);
 
 	// モデルの生成
-	model_body.reset(Model::CreateFromOBJ("TestPlayerver_body", true));
-	model_head.reset(Model::CreateFromOBJ("TestPlayerver_head", true));
-	model_l_arm.reset(Model::CreateFromOBJ("TestPlayerver_l_arm", true));
-	model_r_arm.reset(Model::CreateFromOBJ("TestPlayerver_r_arm", true));
+	P_model_body.reset(Model::CreateFromOBJ("TestPlayerver_body", true));
+	P_model_head.reset(Model::CreateFromOBJ("TestPlayerver_head", true));
+	P_model_l_arm.reset(Model::CreateFromOBJ("TestPlayerver_l_arm", true));
+	P_model_r_arm.reset(Model::CreateFromOBJ("TestPlayerver_r_arm", true));
+
+	E_model_body.reset(Model::CreateFromOBJ("EnemyTest_Body", true));
+	E_model_F_Wepon.reset(Model::CreateFromOBJ("EnemyTest_F_Wepon", true));
+	E_model_I_Wepon.reset(Model::CreateFromOBJ("EnemyTest_I_Wepon", true));
 
 
 	skydomeModel_.reset(Model::CreateFromOBJ("skydome", true));
@@ -52,8 +56,31 @@ void GameScene::Initialize() {
 
 	// プレイヤーの生成
 	player_ = std::make_unique<Player>();
+
+	// 敵の生成
+	enemy_ = std::make_unique<Enemy>();
+
+
 	// プレイヤーの初期化
-	player_->Initialize(model_body.get(), model_head.get(), model_l_arm.get(), model_r_arm.get());
+	std::vector<Model*> playerModels = {
+	    P_model_body.get(), 
+		P_model_head.get(), 
+		P_model_l_arm.get(),
+		P_model_r_arm.get()};
+
+		// プレイヤーの初期化
+	std::vector<Model*> enemyModels = {
+	    E_model_body.get(), 
+		E_model_F_Wepon.get(), 
+		E_model_I_Wepon.get()};
+
+
+
+	// プレイヤーの初期化
+	player_->Initialize(playerModels);
+
+	// 敵の初期化
+	enemy_->Initialize(enemyModels);
 
 	// 追従カメラの生成
 	followCamera_ = std::make_unique<FollowCamera>();
@@ -95,6 +122,9 @@ void GameScene::Update() {
 
 	// プレイヤーの更新
 	player_->Update();
+
+	// プレイヤーの更新
+	enemy_->Update();
 
 	if (isDebugCameraActive_) {
 		debugCamera_->Update();
@@ -149,6 +179,9 @@ void GameScene::Draw() {
 
 	// プレイヤーの描画
 	player_->Draw(viewProjection_);
+
+	// プレイヤーの描画
+	enemy_->Draw(viewProjection_);
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();

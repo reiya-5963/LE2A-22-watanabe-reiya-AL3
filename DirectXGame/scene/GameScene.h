@@ -13,6 +13,7 @@
 #include <memory>
 #include "DebugCamera.h"
 #include "Player.h"
+#include "Enemy.h"
 #include "skydome.h"
 #include "Ground.h"
 #include "FollowCamera.h"
@@ -69,17 +70,31 @@ private: // メンバ変数
 
 
 	// モデル
-	std::unique_ptr<Model> model_body = nullptr;
+	std::unique_ptr<Model> P_model_body = nullptr;
 	// モデル
-	std::unique_ptr<Model> model_head = nullptr;
+	std::unique_ptr<Model> P_model_head = nullptr;
 	// モデル
-	std::unique_ptr<Model> model_l_arm = nullptr;
+	std::unique_ptr<Model> P_model_l_arm = nullptr;
 	// モデル
-	std::unique_ptr<Model> model_r_arm = nullptr;
+	std::unique_ptr<Model> P_model_r_arm = nullptr;
+
+
+	// モデル
+	std::unique_ptr<Model> E_model_body = nullptr;
+	// モデル
+	std::unique_ptr<Model> E_model_I_Wepon = nullptr;
+	// モデル
+	std::unique_ptr<Model> E_model_F_Wepon = nullptr;
+
 
 
 	// プレイヤー
 	std::unique_ptr<Player> player_ = nullptr;
+
+	// 敵
+	std::unique_ptr<Enemy> enemy_ = nullptr;
+
+
 
 	// モデル
 	std::unique_ptr<Model> skydomeModel_ = nullptr;
