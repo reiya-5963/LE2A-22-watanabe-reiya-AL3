@@ -1,4 +1,5 @@
 #include "Enemy.h"
+#include "MyMath.h"
 #include <cassert>
 
 void Enemy::Initialize(const std::vector<Model*>& models) {
@@ -23,6 +24,17 @@ void Enemy::Initialize(const std::vector<Model*>& models) {
 }
 
 void Enemy::Update() { 
+	worldTrans_.rotation_.y += 0.01f;
+	Vector3 tmpVelocity{0.0f, 0.0f, kMoveSpeed};
+
+	velocity_ = MyMath::TransformNormal(tmpVelocity, worldTrans_.matWorld_);
+
+	worldTrans_.translation_.x += velocity_.x;
+	worldTrans_.translation_.y += velocity_.y;
+	worldTrans_.translation_.z += velocity_.z;
+
+
+
 	BaseCharacter::Update();
 	worldTransform_body_.UpdateMatrix();
 	worldTransform_f_weapon_.UpdateMatrix();

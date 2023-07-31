@@ -81,7 +81,7 @@ void GameScene::Initialize() {
 
 	// 敵の初期化
 	enemy_->Initialize(enemyModels);
-
+	enemy_->SetVelocity({0, 0, 1});
 	// 追従カメラの生成
 	followCamera_ = std::make_unique<FollowCamera>();
 	// 追従カメラの初期化
@@ -124,6 +124,7 @@ void GameScene::Update() {
 	player_->Update();
 
 	// プレイヤーの更新
+	//enemy_->SetVelocity({0, 0, 1});
 	enemy_->Update();
 
 	if (isDebugCameraActive_) {
