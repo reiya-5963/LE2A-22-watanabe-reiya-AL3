@@ -2,7 +2,11 @@
 #include <variant>
 #include <map>
 #include <string>
+#include <iostream>
+#include <fstream>
 #include <Vector3.h>
+#include <json.hpp>
+#include <json_fwd.hpp>
 
 /// <summary>
 /// 
@@ -40,6 +44,12 @@ public:
 	/// </summary>
 	void Update();
 
+	/// <summary>
+	/// ファイルに書き出し
+	/// </summary>
+	/// <param name="groupName">グループ</param>
+	void SaveFile(const std::string& groupName);
+
 private:
 	GlobalVariables() = default;
 	~GlobalVariables() = default;
@@ -47,6 +57,9 @@ private:
 	const GlobalVariables& operator=(const GlobalVariables&) = delete;
 
 	std::map<std::string, Group> datas_;
+
+	// グローバル変数の保存先ファイルパス
+	const std::string kDirectoryPath = "Resources/GlobalVariables/";
 
 
 };

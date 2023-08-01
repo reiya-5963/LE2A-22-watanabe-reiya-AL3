@@ -271,6 +271,9 @@ void Player::BehaviorRootUpdate() {
 		if (input_->PushKey(DIK_SPACE)) {
 			behaviorRequest_ = Behavior::kAttack;
 		}
+		if (input_->PushKey(DIK_G)) {
+			GlobalVariables::GetInstance()->SaveFile("Player");
+		}
 		move = MyMath::Normalize(move);
 		move.x *= speed;
 		move.y *= speed;
