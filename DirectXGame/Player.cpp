@@ -258,7 +258,7 @@ void Player::BehaviorRootUpdate() {
 		if (input_->PushKey(DIK_D)) {
 			move.x = 1.0f;
 		}
-		if (input_->PushKey(DIK_G)) {
+		if (input_->PushKey(DIK_SPACE)) {
 			behaviorRequest_ = Behavior::kAttack;
 		}
 		move = MyMath::Normalize(move);
