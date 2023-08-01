@@ -21,9 +21,9 @@ void Player::Initialize(const std::vector<Model*>& models) {
 	const char* groupName = "Player";
 	//
 	GlobalVariables::GetInstance()->CreateGroup(groupName);
-	globalVariables->SetValue(groupName, "TestInt", 90);
-	globalVariables->SetValue(groupName, "TestFloat", 90.0f);
-	globalVariables->SetValue(groupName, "TestVec", {50.0f, 20.0f, 5.0f});
+	globalVariables->AddItem(groupName, "TestInt", 90);
+	//globalVariables->AddItem(groupName, "TestFloat", 90.0f);
+	globalVariables->AddItem(groupName, "TestVec", {50.0f, 20.0f, 5.0f});
 
 
 	// ベース部分の初期化
