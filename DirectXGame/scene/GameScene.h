@@ -77,6 +77,9 @@ private: // メンバ変数
 	std::unique_ptr<Model> P_model_l_arm = nullptr;
 	// モデル
 	std::unique_ptr<Model> P_model_r_arm = nullptr;
+	//
+	std::unique_ptr<Model> P_model_wepon = nullptr;
+
 
 
 	// モデル

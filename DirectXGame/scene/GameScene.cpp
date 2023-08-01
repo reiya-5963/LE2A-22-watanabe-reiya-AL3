@@ -32,6 +32,7 @@ void GameScene::Initialize() {
 	P_model_head.reset(Model::CreateFromOBJ("TestPlayerver_head", true));
 	P_model_l_arm.reset(Model::CreateFromOBJ("TestPlayerver_l_arm", true));
 	P_model_r_arm.reset(Model::CreateFromOBJ("TestPlayerver_r_arm", true));
+	P_model_wepon.reset(Model::CreateFromOBJ("wepon", true));
 
 	E_model_body.reset(Model::CreateFromOBJ("EnemyTest_Body", true));
 	E_model_F_Wepon.reset(Model::CreateFromOBJ("EnemyTest_F_Wepon", true));
@@ -66,9 +67,10 @@ void GameScene::Initialize() {
 	    P_model_body.get(), 
 		P_model_head.get(), 
 		P_model_l_arm.get(),
-		P_model_r_arm.get()};
+		P_model_r_arm.get(),
+	    P_model_wepon.get()};
 
-		// プレイヤーの初期化
+		// 敵の初期化
 	std::vector<Model*> enemyModels = {
 	    E_model_body.get(), 
 		E_model_F_Wepon.get(), 

@@ -1,6 +1,6 @@
 #pragma once
 #include "BaseCharacter.h"
-
+#include <optional>
 #include "input/Input.h"
 
 /// <summary>
@@ -13,6 +13,12 @@ class Player : public BaseCharacter {
 		ModelIndexHead,
 		ModelIndexL_Arm,
 		ModelIndexR_Arm,
+		ModelIndexWepon
+	};
+
+	enum class Behavior { 
+		kRoot,
+		kAttack,
 	};
 
 public: // メンバ関数
@@ -49,6 +55,24 @@ public: // メンバ関数
 
 	// 腕ふりギミック更新
 	void UpdateArmGimmick();
+	
+	// 通常行動更新
+	void BehaviorRootUpdate();
+
+	// 攻撃行動更新
+	void BehaviorAttackUpdate();
+
+	void InitializeAttackArmGimmick();
+
+	void UpdateAttackArmGimmick();
+
+	void InitializeAttackWeponGimmick();
+
+	void UpdateAttackWeponGimmick();
+
+	void BehaviorRootInitialize();
+
+	void BehaviorAttackInitialize();
 
 private: // メンバ変数
 	// ワールド変換データ
@@ -57,6 +81,7 @@ private: // メンバ変数
 	WorldTransform worldTransform_head_;
 	WorldTransform worldTransform_l_arm_;
 	WorldTransform worldTransform_r_arm_;
+	WorldTransform worldTransform_wepon_;
 
 	// キーボード入力
 	Input* input_ = nullptr;
@@ -77,4 +102,21 @@ private: // メンバ変数
 	float armPeriod_ = 60.0f;
 	// 腕ふりの振幅<m>
 	float armAmplitude = 60.0f;
+
+	// 腕ふりギミックの媒介変数
+	float weponParameter_ = 0.0f;
+	// 腕ふりのサイクル<flame>
+	float weponPeriod_ = 60.0f;
+	// 腕ふりの振幅<m>
+	float weponAmplitude = 60.0f;
+
+	int attackCount_ = 0;
+	const int kMaxAtkCount = 40;
+
+	bool isAttack_ = false;
+	bool isAtkFinish_ = false;
+
+	Behavior behavior_ = Behavior::kRoot;
+	//
+	std::optional<Behavior> behaviorRequest_ = std::nullopt;
 };
