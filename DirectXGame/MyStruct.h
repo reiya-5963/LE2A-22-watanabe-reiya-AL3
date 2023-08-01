@@ -42,11 +42,11 @@ struct Plane final {
 	float distance;	//!< 距離
 };
 
-struct Triangle {
+struct Triangle final {
 	Vector3 vertices[3]; //!< 頂点(3個)
 };
 
-struct AABB {
+struct AABB final {
 	Vector3 min;	//!< 最少点
 	Vector3 max;	//!< 最大点
 

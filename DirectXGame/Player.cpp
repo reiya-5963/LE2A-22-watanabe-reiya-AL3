@@ -1,6 +1,7 @@
 #include "Player.h"
 #include "ImGuiManager.h"
 #include "MyMath.h"
+#include "GlobalVariables.h"
 #include <cassert>
 
 /// <summary>
@@ -14,6 +15,16 @@ void Player::Initialize(const std::vector<Model*>& models) {
 
 	// インプット系の初期化
 	input_ = Input::GetInstance();
+
+	GlobalVariables* globalVariables = GlobalVariables::GetInstance();
+	globalVariables;
+	const char* groupName = "Player";
+	//
+	GlobalVariables::GetInstance()->CreateGroup(groupName);
+	globalVariables->SetValue(groupName, "TestInt", 90);
+	globalVariables->SetValue(groupName, "TestFloat", 90.0f);
+	globalVariables->SetValue(groupName, "TestVec", {50.0f, 20.0f, 5.0f});
+
 
 	// ベース部分の初期化
 	BaseCharacter::Initialize(models);
@@ -44,7 +55,6 @@ void Player::Initialize(const std::vector<Model*>& models) {
 	InitializeFloatingGimmick();
 	InitializeArmGimmick();
 	worldTrans_.rotation_.y = std::atan2(worldTrans_.rotation_.x, worldTrans_.rotation_.z);
-
 
 }
 
