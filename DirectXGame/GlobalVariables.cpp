@@ -254,29 +254,30 @@ void GlobalVariables::LoadFile(const std::string& groupName) {
 
 // 項目の追加(int)
 void GlobalVariables::AddItem(const std::string& groupName, const std::string& key, int32_t value) {
-	std::map<std::string, Item>::iterator itItem = datas_[groupName].items.find(key);
-	if (itItem == datas_[groupName].items.end()) {
+//	std::map<std::string, Item>::iterator itItem = datas_[groupName].items.find(key);
+	if (datas_[groupName].items.find(key) == datas_[groupName].items.end()) {
 		SetValue(groupName, key, value);
 	}
 }
 // 項目の追加(float)
 void GlobalVariables::AddItem(const std::string& groupName, const std::string& key, float value) {
-	std::map<std::string, Item>::iterator itItem = datas_[groupName].items.find(key);
-	if (itItem == datas_[groupName].items.end()) {
+	//std::map<std::string, Item>::iterator itItem = datas_[groupName].items.find(key);
+	if (datas_[groupName].items.find(key) == datas_[groupName].items.end()) {
 		SetValue(groupName, key, value);
 	}
 }
 // 項目の追加(Vector3)
 void GlobalVariables::AddItem(const std::string& groupName, const std::string& key, Vector3 value) {
-	std::map<std::string, Item>::iterator itItem = datas_[groupName].items.find(key);
-	if (itItem == datas_[groupName].items.end()) {
+//	std::map<std::string, Item>::iterator itItem = datas_[groupName].items.find(key);
+	if (datas_[groupName].items.find(key) == datas_[groupName].items.end()) {
 		SetValue(groupName, key, value);
 	}
 }
 
 int32_t GlobalVariables::GetIntValue(const std::string& groupName, const std::string& key) const {
-	//std::map<std::string, Group>::iterator itGroup = datas_.find(groupName);
-	//assert(datas_[groupName] == datas_.end());
+	assert(datas_.find(groupName) != datas_.end());
+	// グループの参照を取得
+	Group& group = datas_[groupName];
 
 }
 float GlobalVariables::GetFloatValue(const std::string& groupName, const std::string& key) const {
