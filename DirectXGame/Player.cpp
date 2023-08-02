@@ -81,7 +81,6 @@ void Player::BehaviorAttackInitialize() {
 /// 更新
 /// </summary>
 void Player::Update() {
-	ApplyGlobalVariavles();
 
 	if (behaviorRequest_) {
 		behavior_ = behaviorRequest_.value();
@@ -318,17 +317,4 @@ void Player::BehaviorRootUpdate() {
 void Player::BehaviorAttackUpdate() {
 	UpdateAttackArmGimmick();
 	UpdateAttackWeponGimmick();
-}
-
-void Player::ApplyGlobalVariavles() {
-	GlobalVariables* globalVariables = GlobalVariables::GetInstance();
-	const char* groupName = "Player";
-	worldTransform_head_.translation_ =
-	    globalVariables->GetVector3Value(groupName, "Head Translation");
-	worldTransform_l_arm_.translation_ =
-	    globalVariables->GetVector3Value(groupName, "ArmL Translation");
-	worldTransform_r_arm_.translation_ =
-	    globalVariables->GetVector3Value(groupName, "ArmR Translation");
-	floatingPeriod_ = globalVariables->GetFloatValue(groupName, "floatingCycle");
-	floatingAmplitude = globalVariables->GetFloatValue(groupName, "floatingAmplitude");
 }
