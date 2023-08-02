@@ -57,10 +57,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	primitiveDrawer = PrimitiveDrawer::GetInstance();
 	primitiveDrawer->Initialize();
 #pragma endregion
-	// グローバル変数の読み込み
-	GlobalVariables::GetInstance()->LoadFiles();
-	
-
 
 	// ゲームシーンの初期化
 	gameScene = new GameScene();

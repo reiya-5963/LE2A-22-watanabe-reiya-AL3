@@ -19,9 +19,9 @@ void GlobalVariables::SetValue(const std::string& groupName, const std::string& 
 	Group& group = datas_[groupName];
 	// 新しい項目のデータを設定
 	Item newItem{};
-	newItem = value;
+	newItem.value = value;
 	// 設定した項目をstd::mapに追加
-	group[key] = newItem;
+	group.items[key] = newItem;
 }
 // 値のセット(float)
 void GlobalVariables::SetValue(const std::string& groupName, const std::string& key, float value) {
@@ -29,9 +29,9 @@ void GlobalVariables::SetValue(const std::string& groupName, const std::string& 
 	Group& group = datas_[groupName];
 	// 新しい項目のデータを設定
 	Item newItem{};
-	newItem = value;
+	newItem.value = value;
 	// 設定した項目をstd::mapに追加
-	group[key] = newItem;
+	group.items[key] = newItem;
 }
 // 値のセット(Vector3)
 void GlobalVariables::SetValue(const std::string& groupName, const std::string& key, Vector3 value) {
@@ -39,9 +39,9 @@ void GlobalVariables::SetValue(const std::string& groupName, const std::string& 
 	Group& group = datas_[groupName];
 	// 新しい項目のデータを設定
 	Item newItem{};
-	newItem = value;
+	newItem.value = value;
 	// 設定した項目をstd::mapに追加
-	group[key] = newItem;
+	group.items[key] = newItem;
 }
 
 void GlobalVariables::Update() {
@@ -63,26 +63,26 @@ void GlobalVariables::Update() {
 			continue;
 
 		// 各項目について
-		for (std::map<std::string, Item>::iterator itItem = group.begin();
-		     itItem != group.end(); ++itItem) {
+		for (std::map<std::string, Item>::iterator itItem = group.items.begin();
+		     itItem != group.items.end(); ++itItem) {
 			// 項目名を取得
 			const std::string& itemName = itItem->first;
 			// 項目の参照を取得
 			Item& item = itItem->second;
 
 			// int32_t型の値を保持していれば
-			if (std::holds_alternative<int32_t>(item)) {
-				int32_t* ptr = std::get_if<int32_t>(&item);
+			if (std::holds_alternative<int32_t>(item.value)) {
+				int32_t* ptr = std::get_if<int32_t>(&item.value);
 				ImGui::SliderInt(itemName.c_str(), ptr, 0, 100);
 			} 
 			// float型の値を保持していれば
-			else if (std::holds_alternative<float>(item)) {
-				float* ptr = std::get_if<float>(&item);
+			else if (std::holds_alternative<float>(item.value)) {
+				float* ptr = std::get_if<float>(&item.value);
 				ImGui::SliderFloat(itemName.c_str(), ptr, 0.0f, 100.0f);
 			}
 			// Vector3型の値を保持していれば
-			else if (std::holds_alternative<Vector3>(item)) {
-				Vector3* ptr = std::get_if<Vector3>(&item);
+			else if (std::holds_alternative<Vector3>(item.value)) {
+				Vector3* ptr = std::get_if<Vector3>(&item.value);
 				ImGui::SliderFloat3(itemName.c_str(), reinterpret_cast<float*>(ptr), -10.0f, 10.0f);
 			}
 			//
@@ -118,27 +118,27 @@ void GlobalVariables::SaveFile(const std::string& groupName) {
 	root[groupName] = json::object();
 
 	// 各項目について
-	for (std::map<std::string, Item>::iterator itItem = itGroup->second.begin();
-	     itItem != itGroup->second.end(); ++itItem) {
+	for (std::map<std::string, Item>::iterator itItem = itGroup->second.items.begin();
+	     itItem != itGroup->second.items.end(); ++itItem) {
 		// 項目名を取得
 		const std::string& itemName = itItem->first;
 		// 項目の参照を取得
 		Item& item = itItem->second;
 		
 		// int32_t型の値を保持していれば
-		if (std::holds_alternative<int32_t>(item)) {
+		if (std::holds_alternative<int32_t>(item.value)) {
 			// int32_t型の値を登録
-			root[groupName][itemName] = std::get<int32_t>(item);
+			root[groupName][itemName] = std::get<int32_t>(item.value);
 		}
 		// float型の値を保持していれば
-		else if (std::holds_alternative<float>(item)) {
+		else if (std::holds_alternative<float>(item.value)) {
 			// float型の値を登録
-			root[groupName][itemName] = std::get<float>(item);
+			root[groupName][itemName] = std::get<float>(item.value);
 		}
 		// Vector3型の値を保持していれば
-		else if (std::holds_alternative<Vector3>(item)) {
+		else if (std::holds_alternative<Vector3>(item.value)) {
 			// Vector3型のjson配列登録
-			Vector3 value = std::get<Vector3>(item);
+			Vector3 value = std::get<Vector3>(item.value);
 			root[groupName][itemName] = json::array({value.x, value.y, value.z});
 		}	
 	}

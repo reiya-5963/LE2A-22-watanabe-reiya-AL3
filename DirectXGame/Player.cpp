@@ -54,11 +54,11 @@ void Player::Initialize(const std::vector<Model*>& models) {
 	const char* groupName = "Player";
 	//
 	GlobalVariables::GetInstance()->CreateGroup(groupName);
-	globalVariables->AddItem(groupName, "Head Translation", worldTransform_head_.translation_);
-	globalVariables->AddItem(groupName, "ArmL Translation", worldTransform_l_arm_.translation_);
-	globalVariables->AddItem(groupName, "ArmR Translation", worldTransform_r_arm_.translation_);
-	globalVariables->AddItem(groupName, "floatingCycle", floatingPeriod_);
-	globalVariables->AddItem(groupName, "floatingAmplitude", floatingAmplitude);
+	globalVariables->SetValue(groupName, "Head Translation", worldTransform_head_.translation_);
+	globalVariables->SetValue(groupName, "ArmL Translation", worldTransform_l_arm_.translation_);
+	globalVariables->SetValue(groupName, "ArmR Translation", worldTransform_r_arm_.translation_);
+	globalVariables->SetValue(groupName, "floatingCycle", floatingPeriod_);
+	globalVariables->SetValue(groupName, "floatingAmplitude", floatingAmplitude);
 }
 
 void Player::BehaviorRootInitialize() {
