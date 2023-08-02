@@ -74,6 +74,8 @@ public: // メンバ関数
 
 	void BehaviorAttackInitialize();
 
+	void ApplyGlobalVariavles();
+
 private: // メンバ変数
 	// ワールド変換データ
 	//WorldTransform worldTransform_;

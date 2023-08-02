@@ -16,14 +16,7 @@ void Player::Initialize(const std::vector<Model*>& models) {
 	// インプット系の初期化
 	input_ = Input::GetInstance();
 
-	GlobalVariables* globalVariables = GlobalVariables::GetInstance();
-	globalVariables;
-	const char* groupName = "Player";
-	//
-	GlobalVariables::GetInstance()->CreateGroup(groupName);
-	globalVariables->AddItem(groupName, "TestInt", 90);
-	//globalVariables->AddItem(groupName, "TestFloat", 90.0f);
-	globalVariables->AddItem(groupName, "TestVec", {50.0f, 20.0f, 5.0f});
+
 
 
 	// ベース部分の初期化
@@ -55,7 +48,17 @@ void Player::Initialize(const std::vector<Model*>& models) {
 	InitializeFloatingGimmick();
 	InitializeArmGimmick();
 	worldTrans_.rotation_.y = std::atan2(worldTrans_.rotation_.x, worldTrans_.rotation_.z);
-
+	
+	GlobalVariables* globalVariables = GlobalVariables::GetInstance();
+	globalVariables;
+	const char* groupName = "Player";
+	//
+	GlobalVariables::GetInstance()->CreateGroup(groupName);
+	globalVariables->AddItem(groupName, "Head Translation", worldTransform_head_.translation_);
+	globalVariables->AddItem(groupName, "ArmL Translation", worldTransform_l_arm_.translation_);
+	globalVariables->AddItem(groupName, "ArmR Translation", worldTransform_r_arm_.translation_);
+	globalVariables->AddItem(groupName, "floatingCycle", floatingPeriod_);
+	globalVariables->AddItem(groupName, "floatingAmplitude", floatingAmplitude);
 }
 
 void Player::BehaviorRootInitialize() {
@@ -78,8 +81,8 @@ void Player::BehaviorAttackInitialize() {
 /// 更新
 /// </summary>
 void Player::Update() {
-	//BehaviorAttackUpdate();
-	// BehaviorRootUpdate();
+	ApplyGlobalVariavles();
+
 	if (behaviorRequest_) {
 		behavior_ = behaviorRequest_.value();
 		switch (behavior_) {
@@ -315,4 +318,17 @@ void Player::BehaviorRootUpdate() {
 void Player::BehaviorAttackUpdate() {
 	UpdateAttackArmGimmick();
 	UpdateAttackWeponGimmick();
+}
+
+void Player::ApplyGlobalVariavles() {
+	GlobalVariables* globalVariables = GlobalVariables::GetInstance();
+	const char* groupName = "Player";
+	worldTransform_head_.translation_ =
+	    globalVariables->GetVector3Value(groupName, "Head Translation");
+	worldTransform_l_arm_.translation_ =
+	    globalVariables->GetVector3Value(groupName, "ArmL Translation");
+	worldTransform_r_arm_.translation_ =
+	    globalVariables->GetVector3Value(groupName, "ArmR Translation");
+	floatingPeriod_ = globalVariables->GetFloatValue(groupName, "floatingCycle");
+	floatingAmplitude = globalVariables->GetFloatValue(groupName, "floatingAmplitude");
 }
