@@ -16,9 +16,6 @@ void Player::Initialize(const std::vector<Model*>& models) {
 	// インプット系の初期化
 	input_ = Input::GetInstance();
 
-
-
-
 	// ベース部分の初期化
 	BaseCharacter::Initialize(models);
 
