@@ -305,13 +305,7 @@ void Player::BehaviorRootUpdate() {
 	UpdateArmGimmick();
 
 	ImGui::Begin("Player");
-	ImGui::SliderFloat3("head", &worldTransform_head_.translation_.x, 0.0f, 50.0f);
-	ImGui::SliderFloat3("l_arm", &worldTransform_l_arm_.translation_.x, 0.0f, -50.0f);
-	ImGui::SliderFloat3("r_arm", &worldTransform_r_arm_.translation_.x, 0.0f, 50.0f);
-	ImGui::SliderFloat("period", &floatingPeriod_, 0.0f, 500.0f);
-	ImGui::SliderFloat("amplitude", &floatingAmplitude, 0.0f, 500.0f);
-	ImGui::SliderFloat("armperiod", &armPeriod_, 0.0f, 500.0f);
-	ImGui::SliderFloat("armamplitude", &armAmplitude, 0.0f, 500.0f);
+	ImGui::ShowDemoWindow();
 	ImGui::End();
 }
 
